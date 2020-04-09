@@ -7,14 +7,14 @@ import useCounter from "./services/CounterService";
 import Counters from "./components/Counters";
 
 export default function App() {
-    const {loading, users, error, fetch} = useExecQuery();
+    const {suspense, users, error, fetch} = useExecQuery();
     const {count, increment, decrement} = useCounter();
 
     if (error) return <div>Error...</div>;
 
     return (
         <div>
-            <UserList loading={loading} users={users} fetchUsers={fetch}/>
+            <UserList loading={suspense} users={users} fetchUsers={fetch}/>
             <Counters count={count} increment={increment} decrement={decrement}/>
         </div>
     );

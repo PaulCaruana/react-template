@@ -1,7 +1,7 @@
 import {useEffect} from "react";
 import { dispatch, useGlobalState } from "./Store";
 import MicroEmitter from "micro-emitter";
-const QUERY_EVENT = "query";
+const FETCH_EVENT = "fetch";
 
 export default class RestService {
     constructor(resource, gateway, options) {
@@ -14,9 +14,9 @@ export default class RestService {
         this.useExecQuery = this.useExecQuery.bind(this);
     }
 
-    useExecQuery() {
+    useExecQuery(options) {
         useEffect(() => {
-            this.eventEmitter.emit(QUERY_EVENT);
+            this.eventEmitter.emit(FETCH_EVENT, options);
         }, []);
         return this.useQuery();
 
@@ -24,19 +24,23 @@ export default class RestService {
 
     useQuery() {
         const [state] = useGlobalState(this.resource);
-        const fetchRequest = async () => {
-            dispatch({type: "loading"});
+        const fetchRequest = async (options) => {
+            dispatch({type: "fetching"});
             try {
-                const response = await this.gateway.fetch();
-                dispatch({type: "success", data: response.data});
+                const response = await this.fetch(options);
+                dispatch({type: "fetched", data: response.data});
             } catch (e) {
                 dispatch({type: "error", error: e});
                 console.error("Error:", e);
             }
         };
-        this.eventEmitter.on(QUERY_EVENT, fetchRequest);
-        const {loading, data, error} = state;
-        return {loading, [this.resource]: data, error, fetch: fetchRequest};
+        this.eventEmitter.addListener(FETCH_EVENT, (options) => fetchRequest(options));
+        const {suspense, fetching, data, error} = state;
+        return {suspense, fetching, [this.resource]: data, error, fetch: fetchRequest};
+    }
+
+    async fetch(options) {
+        return await this.gateway.fetch(options);
     }
 
 

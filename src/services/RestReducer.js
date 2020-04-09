@@ -1,6 +1,7 @@
 const initialState = {
     users: {
-        loading: false,
+        fetching: false,
+        suspense: false,
         data: null,
         error: null
     }
@@ -8,23 +9,26 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-    case "loading":
+    case "fetching":
         return {
             ...state,
-            loading: true
+            fetching: true,
+            suspense: true
         };
-    case "success":
+    case "fetched":
         return {
             ...state,
             data: action.data,
             error: null,
-            loading: false
+            fetching: false,
+            suspense: false
         };
     case "error":
         return {
             ...state,
             error: action.error,
-            loading: false
+            fetching: false,
+            suspense: false
         };
     default:
         return state;
