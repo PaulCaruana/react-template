@@ -1,6 +1,6 @@
 import React from "react";
 
-const Counter = ({count, increment, decrement}) => {
+const Counters = ({count, increment, decrement}) => {
     return (
         <div>
             <span>Count: {count}</span>
@@ -10,4 +10,4 @@ const Counter = ({count, increment, decrement}) => {
     );
 };
 
-export default Counter;
+export default Counters;
