@@ -15,6 +15,7 @@ export default class RestService {
         this.useExecQuery = this.useExecQuery.bind(this);
         this.useDeleteData = this.useDeleteData.bind(this);
         this.fetch = this.fetch.bind(this);
+        this.selectData = this.selectData.bind(this);
         this.deleteData = this.deleteData.bind(this);
     }
 
@@ -29,10 +30,11 @@ export default class RestService {
         const [state] = useGlobalState(this.resource);
         const fetch = this.fetch;
         const deleteData = this.deleteData;
+        const selectData = this.selectData;
         const refetch = () => fetch(this.fetchOptions);
         this.eventEmitter.addListener(FETCH_EVENT, (options) => fetch(options));
         this.eventEmitter.on(REFETCH_EVENT, this.refetch);
-        return {...state, fetch, refetch, deleteData};
+        return {...state, fetch, refetch, selectData, deleteData};
     }
 
     useDeleteData() {
@@ -54,6 +56,10 @@ export default class RestService {
     }
     async fetchInternal(options) {
         return await this.gateway.fetchData(options);
+    }
+
+    selectData(payload) {
+        dispatch({type: "selected", payload});
     }
 
     async deleteData(options) {

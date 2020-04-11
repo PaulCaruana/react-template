@@ -9,7 +9,7 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
     const payload = action.payload;
-    const id = (payload)? payload.id : action.id;
+    const id = (payload) ? payload.id : action.id;
     const data = state.data;
     switch (action.type) {
     case "fetching":
@@ -18,7 +18,7 @@ const reducer = (state = initialState, action) => {
             fetching: true,
             suspense: true
         };
-     case "creating":
+    case "creating":
         return {
             ...state,
             creating: true,
@@ -51,6 +51,13 @@ const reducer = (state = initialState, action) => {
             fetching: false,
             suspense: false
         };
+    case "selected":
+        return {
+            ...state,
+            selected: payload,
+            error: null,
+            suspense: false
+        };
     case "created":
         return {
             ...state,
@@ -58,7 +65,7 @@ const reducer = (state = initialState, action) => {
                 ...state.data,
                 {
                     ...payload,
-                    id: (id)? id : data.reduce((maxId, data) => Math.max(data.id, maxId), -1) + 1,
+                    id: (id) ? id : data.reduce((maxId, data) => Math.max(data.id, maxId), -1) + 1,
                 }
             ],
             selected: {...state.data[state.data.length - 1]},
@@ -69,7 +76,7 @@ const reducer = (state = initialState, action) => {
     case "read":
         return {
             ...state,
-            data: data.map(current => (current.id === id? payload : current)),
+            data: data.map(current => (current.id === id ? payload : current)),
             selected: payload,
             error: null,
             reading: false,
@@ -78,7 +85,7 @@ const reducer = (state = initialState, action) => {
     case "updated":
         return {
             ...state,
-            data: data.map(current => (current.id === id? payload : current)),
+            data: data.map(current => (current.id === id ? payload : current)),
             selected: payload,
             error: null,
             updating: false,
