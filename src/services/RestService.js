@@ -2,7 +2,7 @@ import {useEffect} from "react";
 import {dispatch, useGlobalState} from "./Store";
 import MicroEmitter from "micro-emitter";
 
-const FETCH_EVENT = "fetch", REFETCH_EVENT = "refetch", DELETE_EVENT = "delete";
+const FETCH_EVENT = "fetch", REFETCH_EVENT = "refetch", UPDATED_EVENT = "updated";
 
 export default class RestService {
     constructor(resource, gateway, options) {
@@ -14,6 +14,8 @@ export default class RestService {
         this.useQuery = this.useQuery.bind(this);
         this.useExecQuery = this.useExecQuery.bind(this);
         this.useDeleteData = this.useDeleteData.bind(this);
+        this.fetch = this.fetch.bind(this);
+        this.deleteData = this.deleteData.bind(this);
     }
 
     useExecQuery(options) {
@@ -21,16 +23,22 @@ export default class RestService {
             this.eventEmitter.emit(FETCH_EVENT, options);
         }, [options]);
         return this.useQuery();
-
     }
 
     useQuery() {
         const [state] = useGlobalState(this.resource);
-        const refetch = () => this.fetch(this.fetchOptions);
-        this.eventEmitter.addListener(FETCH_EVENT, (options) => this.fetch(options));
+        const fetch = this.fetch;
+        const deleteData = this.deleteData;
+        const refetch = () => fetch(this.fetchOptions);
+        this.eventEmitter.addListener(FETCH_EVENT, (options) => fetch(options));
         this.eventEmitter.on(REFETCH_EVENT, this.refetch);
-        const {suspense, fetching, data, error} = state;
-        return {suspense, fetching, [this.resource]: data, error, fetch: this.fetch, refetch};
+        return {...state, fetch, refetch, deleteData};
+    }
+
+    useDeleteData() {
+        const [state] = useGlobalState(this.resource);
+        return {...state, deleteData: this.deleteData};
+
     }
 
     async fetch(options) {
@@ -48,23 +56,17 @@ export default class RestService {
         return await this.gateway.fetchData(options);
     }
 
-    useDeleteData() {
-        const [state] = useGlobalState(this.resource);
-        const deleteData = async (options) => {
-            dispatch({type: "deleting"});
-            try {
-                const response = await this.deleteInternal(options);
-                dispatch({type: "deleted", id: response.data.id});
-            } catch (e) {
-                dispatch({type: "error", error: e});
-                console.error("Error:", e);
-            }
-        };
-        this.eventEmitter.on(DELETE_EVENT, deleteData);
-        const {suspense, deleting, data, error} = state;
-        return {suspense, deleting, [this.resource]: data, error, deleteData};
+    async deleteData(options) {
+        dispatch({type: "deleting"});
+        try {
+            const response = await this.deleteInternal(options);
+            dispatch({type: "deleted", id: response.data.id});
+            this.eventEmitter.emit(UPDATED_EVENT);
+        } catch (e) {
+            dispatch({type: "error", error: e});
+            console.error("Error:", e);
+        }
     }
-
     async deleteInternal(options) {
         return await this.gateway.deleteData(options);
     }

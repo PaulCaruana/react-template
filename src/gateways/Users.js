@@ -10,7 +10,6 @@ const Users = () => {
     const deleteData = async (id) => {
         const response = await axios.delete(`${url}/${id}`);
         response.data.id = id;
-        console.log(response)
         return response;
     };
 
