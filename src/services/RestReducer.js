@@ -23,6 +23,20 @@ const reducer = (state = initialState, action) => {
             fetching: false,
             suspense: false
         };
+    case "deleting":
+        return {
+            ...state,
+            deleting: true,
+            suspense: true
+        };
+    case "deleted":
+        return {
+            ...state,
+            data: state.data.filter(current => current.id !== action.id),
+            error: null,
+            deleting: false,
+            suspense: false
+        };
     case "error":
         return {
             ...state,

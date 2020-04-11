@@ -8,5 +8,5 @@ class UserService extends RestService {
 }
 
 const userService = new UserService(userGateway);
-export const {useExecQuery, useQuery} = userService;
+export const {useExecQuery, useQuery, useDeleteData} = userService;
 export default userService;

@@ -1,20 +1,23 @@
 import React from "react";
 import "./index.css";
 
-import {useExecQuery} from "./services/UserService";
-import UserList from "./components/UserList";
+import {useExecQuery, useDeleteData} from "./services/UserService";
+import UserTable from "./scenes/users/Table";
 import useCounter from "./services/CounterService";
 import Counters from "./components/Counters";
 
 export default function App() {
-    const {suspense, users, error, fetch} = useExecQuery();
+    const {fetching, users, error: fetchError, fetch} = useExecQuery();
+    const {deleting, error: deleteError, deleteData} = useDeleteData();
     const {count, increment, decrement} = useCounter();
 
-    if (error) return <div>Error...</div>;
-
+    if (fetchError || deleteError) {
+        return <div>Error occurred, please reload</div>;
+    }
+    //console.log(users)
     return (
         <div>
-            <UserList loading={suspense} users={users} fetchUsers={fetch}/>
+            <UserTable loading={fetching} users={users} fetchUsers={fetch} deleteUser={deleteData} />
             <Counters count={count} increment={increment} decrement={decrement}/>
         </div>
     );
