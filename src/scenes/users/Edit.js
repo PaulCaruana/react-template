@@ -1,28 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import { useForm } from "react-hook-form";
+import React, {useEffect} from "react";
+import {useForm} from "react-hook-form";
 
-const EditUserForm = ({user={}, updateUser}) => {
-    console.log(user)
-    const { register, handleSubmit } = useForm({
-        defaultValues: {
-            name: user.name,
-            username: user.username,
-        }
-    });
+const EditUserForm = ({user, updateUser}) => {
+    const {register, reset, handleSubmit} = useForm();
+    useEffect(() => {
+        reset();
+    }, [reset]);
 
-    const onSubmit = data => {
+    const onSubmit = (data, e) => {
         alert(JSON.stringify(data));
+        //e.target.reset();
     };
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <label htmlFor="name">Name</label>
-            <input type="text" name="name" ref={register} />
+            <input type="text" defaultValue={user.name} name="name" ref={register}/>
             <label htmlFor="username">User name</label>
-            <input type="text" name="username" ref={register} />
-            <input type="submit" />
+            <input type="text" defaultValue={user.username} name="username" ref={register}/>
+            <input type="submit"/>
+
         </form>
     );
-}
+};
 
 export default EditUserForm;

@@ -1,24 +1,18 @@
-import React, {useState, Fragment} from "react";
+import React, {Fragment} from "react";
 import "./index.css";
 
-import {useExecQuery} from "./services/UserService";
+import {useService} from "./services/UserService";
 import UserTable from "./scenes/users/Table";
 import EditUser from "./scenes/users/Edit";
 import {If} from "react-deco";
 
 
 export default function App() {
-    const {suspense, data, selected, error, selectData, deleteData} = useExecQuery();
-    const [editing, setEditing] = useState(false);
-    const editRow = user => {
-        setEditing(true);
-        selectData(user);
-    };
-    //console.log(selected, editing)
+    const {suspense, data, selected, error, editMode, editSelected, deleteData} = useService(true);
 
 
     if (error) {
-        return <div>Error occurred, please reload</div>;
+        return <div>Error: {error}, please reload</div>;
     }
     if (suspense) return <div>Loading...</div>;
 
@@ -28,7 +22,7 @@ export default function App() {
             <h1>CRUD App with Hooks</h1>
             <div className="flex-row">
                 <div className="flex-large">
-                    <If test={editing && selected} then={() =>
+                    <If test={editMode && selected} then={() =>
                         <Fragment>
                             <h2>Edit user</h2>
                             <EditUser user={selected}/>
@@ -41,7 +35,7 @@ export default function App() {
                 </div>
                 <div className="flex-large">
                     <h2>View users</h2>
-                    <UserTable users={data} editRow={editRow} deleteUser={deleteData}/>
+                    <UserTable users={data} editRow={editSelected} deleteUser={deleteData}/>
                 </div>
             </div>
         </div>

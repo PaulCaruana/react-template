@@ -2,7 +2,15 @@ import {useEffect} from "react";
 import {dispatch, useGlobalState} from "./Store";
 import MicroEmitter from "micro-emitter";
 
-const FETCH_EVENT = "fetch", REFETCH_EVENT = "refetch", UPDATED_EVENT = "updated";
+const event = {
+    initialFetch: "initialFetch",
+    doRefetch: "doRefetch",
+    created: "created",
+    read: "read",
+    updated: "updated",
+    deleted: "deleted",
+    isDirty: "isDirty",
+};
 
 export default class RestService {
     constructor(resource, gateway, options) {
@@ -11,36 +19,27 @@ export default class RestService {
         this.fetchOptions = options;
         this.eventEmitter = new MicroEmitter();
         this.dispatch = dispatch;
-        this.useQuery = this.useQuery.bind(this);
-        this.useExecQuery = this.useExecQuery.bind(this);
-        this.useDeleteData = this.useDeleteData.bind(this);
-        this.fetch = this.fetch.bind(this);
-        this.selectData = this.selectData.bind(this);
-        this.deleteData = this.deleteData.bind(this);
+        this.useService = this.useService.bind(this);
+        this.event = event;
     }
 
-    useExecQuery(options) {
-        useEffect(() => {
-            this.eventEmitter.emit(FETCH_EVENT, options);
-        }, [options]);
-        return this.useQuery();
-    }
-
-    useQuery() {
+    useService(options) {
         const [state] = useGlobalState(this.resource);
-        const fetch = this.fetch;
-        const deleteData = this.deleteData;
-        const selectData = this.selectData;
+        const fetch = this.fetch.bind(this);
+        const selectData = this.selectData.bind(this);
+        const setEditMode = this.setEditMode.bind(this);
+        const updateData = this.updateData.bind(this);
+        const deleteData = this.deleteData.bind(this);
         const refetch = () => fetch(this.fetchOptions);
-        this.eventEmitter.addListener(FETCH_EVENT, (options) => fetch(options));
-        this.eventEmitter.on(REFETCH_EVENT, this.refetch);
-        return {...state, fetch, refetch, selectData, deleteData};
-    }
-
-    useDeleteData() {
-        const [state] = useGlobalState(this.resource);
-        return {...state, deleteData: this.deleteData};
-
+        this.eventEmitter.addListener(event.initialFetch, (options) => fetch(options));
+        this.eventEmitter.on(event.doRefetch, this.refetch);
+        useEffect(() => {
+            if (options) {
+                this.eventEmitter.emit(event.initialFetch, options);
+            }
+        }, [options]);
+        const actions = {fetch, refetch, selectData, setEditMode, updateData, deleteData};
+        return {...state, ...actions};
     }
 
     async fetch(options) {
@@ -54,6 +53,7 @@ export default class RestService {
             console.error("Error:", e);
         }
     }
+
     async fetchInternal(options) {
         return await this.gateway.fetchData(options);
     }
@@ -62,17 +62,39 @@ export default class RestService {
         dispatch({type: "selected", payload});
     }
 
-    async deleteData(options) {
-        dispatch({type: "deleting"});
+    setEditMode(editMode) {
+        dispatch({type: "editMode", editMode});
+    }
+
+    async updateData(options) {
+        dispatch({type: "updating"});
         try {
-            const response = await this.deleteInternal(options);
-            dispatch({type: "deleted", id: response.data.id});
-            this.eventEmitter.emit(UPDATED_EVENT);
+            const response = await this.updateInternal(options);
+            dispatch({type: "updated", id: response.data.id});
+            this.eventEmitter.emit(event.updated);
+            this.eventEmitter.emit(event.isDirty);
         } catch (e) {
             dispatch({type: "error", error: e});
             console.error("Error:", e);
         }
     }
+    async updateInternal(options) {
+        return await this.gateway.deleteData(options);
+    }
+
+    async deleteData(options) {
+        dispatch({type: "deleting"});
+        try {
+            const response = await this.deleteInternal(options);
+            dispatch({type: "deleted", id: response.data.id});
+            this.eventEmitter.emit(event.deleted);
+            this.eventEmitter.emit(event.isDirty);
+        } catch (e) {
+            dispatch({type: "error", error: e});
+            console.error("Error:", e);
+        }
+    }
+
     async deleteInternal(options) {
         return await this.gateway.deleteData(options);
     }

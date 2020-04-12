@@ -1,7 +1,13 @@
 const initialState = {
     users: {
         fetching: false,
+        creating: false,
+        reading: false,
+        updating: false,
+        deleting: false,
         suspense: false,
+        editMode: false,
+        selected: null,
         data: null,
         error: null
     }
@@ -27,7 +33,7 @@ const reducer = (state = initialState, action) => {
     case "reading":
         return {
             ...state,
-            creating: true,
+            reading: true,
             suspense: true
         };
     case "updating":
@@ -100,6 +106,11 @@ const reducer = (state = initialState, action) => {
             deleting: false,
             suspense: false
         };
+    case "editMode":
+        return {
+            ...state,
+            editMode: action.editMode
+        };
     case "error":
         return {
             ...state,
@@ -109,7 +120,10 @@ const reducer = (state = initialState, action) => {
             reading: false,
             updating: false,
             deleting: false,
-            suspense: false
+            suspense: false,
+            editMode: false,
+            selected: null,
+            data: null
         };
     default:
         return state;
