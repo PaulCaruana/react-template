@@ -17,7 +17,7 @@ const UserTable = ({users, editRow, deleteUser}) => {
                     <td>{user.name}</td>
                     <td>{user.username}</td>
                     <td>
-                        <button onClick={() => editRow(user)} className="button muted-button">
+                        <button onClick={() => editRow(user.id)} className="button muted-button">
                             Edit
                         </button>
                         <button onClick={() => deleteUser(user.id)} className="button muted-button">

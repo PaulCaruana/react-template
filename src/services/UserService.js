@@ -15,8 +15,9 @@ class UserService extends RestService {
         return {...service, editSelected};
     }
 
-    editSelected(payload) {
-        this.selectData(payload);
+    editSelected(id) {
+        this.selectData(id);
+        //this.readData(id);
         this.setEditMode(true);
     }
 

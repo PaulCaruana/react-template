@@ -7,6 +7,12 @@ const Users = () => {
         return await axios.get(url);
     };
 
+
+    const readData = async (id) => {
+        const response = await axios.get(`${url}/${id}`);
+        return response;
+    };
+
     const createData = async (body) => {
         const config ={
             headers: {
@@ -34,7 +40,7 @@ const Users = () => {
         return response;
     };
 
-    return { fetchData, createData, updateData, deleteData };
+    return { fetchData, createData, readData, updateData, deleteData };
 };
 
 export default Users();

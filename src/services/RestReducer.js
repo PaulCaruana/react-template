@@ -60,7 +60,7 @@ const reducer = (state = initialState, action) => {
     case "selected":
         return {
             ...state,
-            selected: payload,
+            selected: data.find(current => (current.id === id ? payload : current)),
             error: null,
             suspense: false
         };

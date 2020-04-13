@@ -29,6 +29,7 @@ export default class RestService {
         const selectData = this.selectData.bind(this);
         const setEditMode = this.setEditMode.bind(this);
         const createData = this.createData.bind(this);
+        const readData = this.readData.bind(this);
         const updateData = this.updateData.bind(this);
         const deleteData = this.deleteData.bind(this);
         const refetch = () => fetch(this.fetchOptions);
@@ -40,7 +41,7 @@ export default class RestService {
             }
         }, [options]);
         const actions = {
-            fetch, refetch, selectData, setEditMode, createData, updateData, deleteData
+            fetch, refetch, selectData, setEditMode, createData, readData, updateData, deleteData
         };
         return {...state, ...actions};
     }
@@ -61,8 +62,8 @@ export default class RestService {
         return await this.gateway.fetchData(options);
     }
 
-    selectData(payload) {
-        dispatch({type: "selected", payload});
+    selectData(id) {
+        dispatch({type: "selected", id});
     }
 
     setEditMode(editMode) {
@@ -82,6 +83,20 @@ export default class RestService {
     }
     async createInternal(options) {
         return await this.gateway.createData(options);
+    }
+
+    async readData(options) {
+        dispatch({type: "reading"});
+        try {
+            const response = await this.readInternal(options);
+            dispatch({type: "read", payload: response.data});
+            this.eventEmitter.emit(event.read);
+        } catch (e) {
+            this.reportError(e);
+        }
+    }
+    async readInternal(options) {
+        return await this.gateway.readData(options);
     }
 
     async updateData(options) {
@@ -107,11 +122,9 @@ export default class RestService {
             this.eventEmitter.emit(event.deleted);
             this.eventEmitter.emit(event.isDirty);
         } catch (e) {
-            dispatch({type: "error", error: e});
-            console.error("Error:", e);
+            this.reportError(e);
         }
     }
-
     async deleteInternal(options) {
         return await this.gateway.deleteData(options);
     }
