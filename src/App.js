@@ -8,7 +8,8 @@ import {If} from "react-deco";
 
 
 export default function App() {
-    const {suspense, data, selected, error, editMode, editSelected, deleteData} = useService(true);
+    const {suspense, data, selected, error, editMode, editSelected, updateData, deleteData}
+        = useService(true);
 
 
     if (error) {
@@ -22,20 +23,20 @@ export default function App() {
             <h1>CRUD App with Hooks</h1>
             <div className="flex-row">
                 <div className="flex-large">
+                    <h2>View users</h2>
+                    <UserTable users={data} editRow={editSelected} deleteUser={deleteData}/>
+                </div>
+                <div className="flex-large">
                     <If test={editMode && selected} then={() =>
                         <Fragment>
                             <h2>Edit user</h2>
-                            <EditUser user={selected}/>
+                            <EditUser user={selected} updateUser={updateData}/>
                         </Fragment>
                     } else={() =>
                         <Fragment>
                             <h2>Add user</h2>
                         </Fragment>
                     }/>
-                </div>
-                <div className="flex-large">
-                    <h2>View users</h2>
-                    <UserTable users={data} editRow={editSelected} deleteUser={deleteData}/>
                 </div>
             </div>
         </div>

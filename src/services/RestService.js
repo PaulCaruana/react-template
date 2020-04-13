@@ -70,16 +70,15 @@ export default class RestService {
         dispatch({type: "updating"});
         try {
             const response = await this.updateInternal(options);
-            dispatch({type: "updated", id: response.data.id});
+            dispatch({type: "updated", payload: response.data});
             this.eventEmitter.emit(event.updated);
             this.eventEmitter.emit(event.isDirty);
         } catch (e) {
-            dispatch({type: "error", error: e});
-            console.error("Error:", e);
+            this.reportError(e);
         }
     }
     async updateInternal(options) {
-        return await this.gateway.deleteData(options);
+        return await this.gateway.updateData(options);
     }
 
     async deleteData(options) {
@@ -97,6 +96,13 @@ export default class RestService {
 
     async deleteInternal(options) {
         return await this.gateway.deleteData(options);
+    }
+
+    reportError(e) {
+        const message = e.message || "unknown error";
+        const detailedMessage = (e && e.response && e.response.data) || e.stack || e;
+        dispatch({type: "error", error: message});
+        console.error("Error:", detailedMessage);
     }
 
 

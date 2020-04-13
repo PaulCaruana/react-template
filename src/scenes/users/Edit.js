@@ -7,8 +7,9 @@ const EditUserForm = ({user, updateUser}) => {
         reset();
     }, [reset]);
 
-    const onSubmit = (data, e) => {
-        alert(JSON.stringify(data));
+    const onSubmit = (form, e) => {
+        const updatedUser = {...user, ...form};
+        updateUser(updatedUser);
         //e.target.reset();
     };
 
