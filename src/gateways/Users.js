@@ -7,6 +7,16 @@ const Users = () => {
         return await axios.get(url);
     };
 
+    const createData = async (body) => {
+        const config ={
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        };
+        const response = await axios.post(`${url}`, JSON.stringify(body), config);
+        return response;
+    };
+
     const updateData = async (body) => {
         const id = body.id;
         const config ={
@@ -24,7 +34,7 @@ const Users = () => {
         return response;
     };
 
-    return { fetchData, updateData, deleteData };
-}
+    return { fetchData, createData, updateData, deleteData };
+};
 
 export default Users();

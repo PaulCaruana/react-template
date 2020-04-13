@@ -28,6 +28,7 @@ export default class RestService {
         const fetch = this.fetch.bind(this);
         const selectData = this.selectData.bind(this);
         const setEditMode = this.setEditMode.bind(this);
+        const createData = this.createData.bind(this);
         const updateData = this.updateData.bind(this);
         const deleteData = this.deleteData.bind(this);
         const refetch = () => fetch(this.fetchOptions);
@@ -38,7 +39,9 @@ export default class RestService {
                 this.eventEmitter.emit(event.initialFetch, options);
             }
         }, [options]);
-        const actions = {fetch, refetch, selectData, setEditMode, updateData, deleteData};
+        const actions = {
+            fetch, refetch, selectData, setEditMode, createData, updateData, deleteData
+        };
         return {...state, ...actions};
     }
 
@@ -64,6 +67,21 @@ export default class RestService {
 
     setEditMode(editMode) {
         dispatch({type: "editMode", editMode});
+    }
+
+    async createData(options) {
+        dispatch({type: "creating"});
+        try {
+            const response = await this.createInternal(options);
+            dispatch({type: "created", payload: response.data});
+            this.eventEmitter.emit(event.created);
+            this.eventEmitter.emit(event.isDirty);
+        } catch (e) {
+            this.reportError(e);
+        }
+    }
+    async createInternal(options) {
+        return await this.gateway.createData(options);
     }
 
     async updateData(options) {

@@ -4,12 +4,14 @@ import "./index.css";
 import {useService} from "./services/UserService";
 import UserTable from "./scenes/users/Table";
 import EditUser from "./scenes/users/Edit";
+import AddUser from "./scenes/users/Add";
 import {If} from "react-deco";
 
 
 export default function App() {
-    const {suspense, data, selected, error, editMode, editSelected, updateData, deleteData}
-        = useService(true);
+    const {
+        suspense, data, selected, error, editMode, editSelected, createData, updateData, deleteData
+    } = useService(true);
 
 
     if (error) {
@@ -17,7 +19,6 @@ export default function App() {
     }
     if (suspense) return <div>Loading...</div>;
 
-    //console.log("suspense", suspense)
     return (
         <div className="container">
             <h1>CRUD App with Hooks</h1>
@@ -35,6 +36,7 @@ export default function App() {
                     } else={() =>
                         <Fragment>
                             <h2>Add user</h2>
+                            <AddUser createUser={createData}/>
                         </Fragment>
                     }/>
                 </div>
