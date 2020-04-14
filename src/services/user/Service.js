@@ -12,7 +12,6 @@ class Service extends RestService {
     }
 
     postUpdated() {
-        console.log("refetch")
         this.refetch();
     }
 }
