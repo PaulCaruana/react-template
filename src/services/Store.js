@@ -1,5 +1,5 @@
 import {createStore} from "react-hooks-global-state";
-import counterReducer, {initialState as counterInitialState} from "./CounterReducer";
+import counterReducer, {initialState as counterInitialState} from "./counter/Reducer";
 import usersReducer, {initialState as usersInitialState} from "./RestReducer";
 import {combineReducers} from "redux";
 

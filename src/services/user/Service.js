@@ -1,7 +1,7 @@
-import RestService from "./RestService";
-import RestGateway from "../gateways/Rest";
+import RestService from "../RestService";
+import RestGateway from "../RestGateway";
 
-class UserService extends RestService {
+class Service extends RestService {
     constructor(gateway) {
         super("users", gateway, {});
     }
@@ -27,6 +27,6 @@ class UserService extends RestService {
 }
 
 const userGateway = RestGateway("http://localhost:5000/users");
-const userService = new UserService(userGateway);
+const userService = new Service(userGateway);
 export const {useService} = userService;
 export default userService;

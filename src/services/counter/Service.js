@@ -1,4 +1,4 @@
-import { dispatch, useGlobalState } from "./Store";
+import { dispatch, useGlobalState } from "../Store";
 
 const useCounter = () => {
     const increment = () => dispatch({ type: "increment" });

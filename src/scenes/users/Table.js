@@ -16,7 +16,7 @@ const UserTable = ({users, editRow, deleteUser}) => {
                 <tr key={user.id}>
                     <td>{user.name}</td>
                     <td>{user.username}</td>
-                    <td style={{"white-space": "nowrap"}}>
+                    <td style={{"whiteSpace": "nowrap"}}>
                         <button onClick={() => editRow(user.id)} className="button muted-button">
                             Edit
                         </button>

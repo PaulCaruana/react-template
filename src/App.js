@@ -1,7 +1,7 @@
 import React, {Fragment} from "react";
 import "./index.css";
 
-import {useService} from "./services/UserService";
+import {useService} from "./services/user/Service";
 import UserTable from "./scenes/users/Table";
 import EditUser from "./scenes/users/Edit";
 import AddUser from "./scenes/users/Add";
@@ -18,7 +18,7 @@ export default function App() {
         return <div>Error: {error}, please reload</div>;
     }
     if (suspense) return <div>Loading...</div>;
-
+    console.log("suspense", suspense, data)
     return (
         <div className="container">
             <h1>CRUD App with Hooks</h1>

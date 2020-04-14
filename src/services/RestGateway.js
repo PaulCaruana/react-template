@@ -1,7 +1,6 @@
 import axios from "axios";
 
-const Rest = (endPoint) => {
-    //const endPoint = "https://jsonplaceholder.typicode.com/users";
+const RestGateway = (endPoint) => {
 
     const fetchData = async () => {
         return await axios.get(endPoint);
@@ -43,4 +42,4 @@ const Rest = (endPoint) => {
     return { fetchData, createData, readData, updateData, deleteData };
 };
 
-export default Rest;
+export default RestGateway;
