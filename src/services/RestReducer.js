@@ -55,14 +55,16 @@ const reducer = (state = initialState, action) => {
             selected: null,
             error: null,
             fetching: false,
-            suspense: false
+            suspense: false,
+            mode: action.type
         };
     case "selected":
         return {
             ...state,
-            selected: data.find(current => (current.id === id ? payload : current)),
+            selected: data.find(current => current.id === id),
             error: null,
-            suspense: false
+            suspense: false,
+            mode: action.mode || "selected"
         };
     case "created":
         return {
@@ -77,7 +79,8 @@ const reducer = (state = initialState, action) => {
             selected: {...state.data[state.data.length - 1]},
             error: null,
             creating: false,
-            suspense: false
+            suspense: false,
+            mode: action.type
         };
     case "read":
         return {
@@ -86,7 +89,8 @@ const reducer = (state = initialState, action) => {
             selected: payload,
             error: null,
             reading: false,
-            suspense: false
+            suspense: false,
+            mode: action.mode || "selected"
         };
     case "updated":
         return {
@@ -95,7 +99,8 @@ const reducer = (state = initialState, action) => {
             selected: payload,
             error: null,
             updating: false,
-            suspense: false
+            suspense: false,
+            mode: action.type
         };
     case "deleted":
         return {
@@ -104,12 +109,13 @@ const reducer = (state = initialState, action) => {
             selected: null,
             error: null,
             deleting: false,
-            suspense: false
+            suspense: false,
+            mode: action.type
         };
     case "editMode":
         return {
             ...state,
-            editMode: action.editMode
+            mode: action.type
         };
     case "error":
         return {

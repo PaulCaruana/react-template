@@ -3,9 +3,11 @@ import {useForm} from "react-hook-form";
 
 const EditUserForm = ({user, updateUser}) => {
     const {register, reset, handleSubmit} = useForm();
+    //console.log(user);
     useEffect(() => {
+        //console.log("reset");
         reset();
-    }, [reset]);
+    }, [reset, user]);
 
     const onSubmit = (form, e) => {
         const updatedUser = {...user, ...form};

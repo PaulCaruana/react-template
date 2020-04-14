@@ -6,23 +6,14 @@ class Service extends RestService {
         super("users", gateway, {});
     }
 
-    useService(options) {
-        const event = this.event;
-        const editSelected = this.editSelected.bind(this);
-        const postDirty = this.postDirty.bind(this);
-        this.eventEmitter.on(event.isDirty, postDirty);
-        const service = super.useService(options);
-        return {...service, editSelected};
-    }
-
     editSelected(id) {
-        this.selectData(id);
-        //this.readData(id);
-        this.setEditMode(true);
+        this.selectData(id, "edit");
+        this.readData(id, "edit");
     }
 
-    postDirty() {
-        super.setEditMode(false);
+    postUpdated() {
+        console.log("refetch")
+        this.refetch();
     }
 }
 
