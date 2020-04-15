@@ -1,6 +1,6 @@
+import MicroEmitter from "micro-emitter";
 import {useEffect} from "react";
 import {dispatch, useGlobalState} from "./Store";
-import MicroEmitter from "micro-emitter";
 
 const event = {
     initialFetch: "initialFetch",
@@ -31,9 +31,9 @@ export default class RestService {
         const refetch = () => fetch(this.fetchOptions);
         this.refetch = refetch;
         this.actions = {
-            fetch, refetch, selectData, editSelected, createData, readData, updateData, deleteData
+            fetch, refetch, selectData, editSelected, createData, readData, updateData, deleteData,
         };
-        this.eventEmitter.addListener(event.initialFetch, (options) => fetch(options));
+        this.eventEmitter.addListener(event.initialFetch, (fetchOptions) => fetch(fetchOptions));
         this.eventEmitter.on(event.doRefetch, refetch);
         this.eventEmitter.on(event.isUpdated, postUpdated);
         this.event = event;
@@ -43,7 +43,7 @@ export default class RestService {
         const [state] = useGlobalState(this.resource);
         useEffect(() => {
             if (options) {
-                this.eventEmitter.emit(event.initialFetch, options);
+                this.emit(event.initialFetch, options);
             }
         }, [options]);
         return {...state, ...this.actions};
@@ -61,8 +61,8 @@ export default class RestService {
         }
     }
 
-    async fetchInternal(options) {
-        return await this.gateway.fetchData(options);
+    fetchInternal(options) {
+        return this.gateway.fetchData(options);
     }
 
     selectData(id, mode) {
@@ -74,14 +74,15 @@ export default class RestService {
         try {
             const response = await this.createInternal(options);
             dispatch({type: "created", payload: response.data});
-            this.eventEmitter.emit(event.created);
-            this.eventEmitter.emit(event.isUpdated);
+            this.emit(event.created);
+            this.emit(event.isUpdated);
         } catch (e) {
             this.reportError(e);
         }
     }
-    async createInternal(options) {
-        return await this.gateway.createData(options);
+
+    createInternal(options) {
+        return this.gateway.createData(options);
     }
 
     async readData(options, mode) {
@@ -89,13 +90,14 @@ export default class RestService {
         try {
             const response = await this.readInternal(options);
             dispatch({type: "read", payload: response.data, mode});
-            this.eventEmitter.emit(event.read);
+            this.emit(event.read);
         } catch (e) {
             this.reportError(e);
         }
     }
-    async readInternal(options) {
-        return await this.gateway.readData(options);
+
+    readInternal(options) {
+        return this.gateway.readData(options);
     }
 
     async updateData(options) {
@@ -103,14 +105,15 @@ export default class RestService {
         try {
             const response = await this.updateInternal(options);
             dispatch({type: "updated", payload: response.data});
-            this.eventEmitter.emit(event.updated);
-            this.eventEmitter.emit(event.isUpdated);
+            this.emit(event.updated);
+            this.emit(event.isUpdated);
         } catch (e) {
             this.reportError(e);
         }
     }
-    async updateInternal(options) {
-        return await this.gateway.updateData(options);
+
+    updateInternal(options) {
+        return this.gateway.updateData(options);
     }
 
     async deleteData(options) {
@@ -118,17 +121,23 @@ export default class RestService {
         try {
             const response = await this.deleteInternal(options);
             dispatch({type: "deleted", id: response.data.id});
-            this.eventEmitter.emit(event.deleted);
-            this.eventEmitter.emit(event.isUpdated);
+            this.emit(event.deleted);
+            this.emit(event.isUpdated);
         } catch (e) {
             this.reportError(e);
         }
     }
-    async deleteInternal(options) {
-        return await this.gateway.deleteData(options);
+
+    deleteInternal(options) {
+        return this.gateway.deleteData(options);
     }
 
     postUpdated() {
+        // Placeholder
+    }
+
+    emit(evt, options) {
+        this.eventEmitter.emit(evt, options);
     }
 
     reportError(e) {
@@ -137,6 +146,4 @@ export default class RestService {
         dispatch({type: "error", error: message});
         console.error("Error:", detailedMessage);
     }
-
-
 }

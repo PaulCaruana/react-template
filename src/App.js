@@ -1,16 +1,14 @@
 import React, {Fragment} from "react";
 import "./index.css";
+import {If} from "react-deco";
 
 import {useService} from "./services/user/Service";
 import UserTable from "./scenes/users/Table";
-import EditUser from "./scenes/users/Edit";
-import AddUser from "./scenes/users/Add";
-import {If} from "react-deco";
-
+import {AddUserForm, EditUserForm} from "./scenes/users/UserForm";
 
 export default function App() {
     const {
-        suspense, data, selected, error, mode, editSelected, createData, updateData, deleteData
+        suspense, data, selected, error, mode, editSelected, createData, updateData, deleteData,
     } = useService(true);
 
 
@@ -32,12 +30,12 @@ export default function App() {
                     <If test={mode === "edit"} then={() =>
                         <Fragment>
                             <h2>Edit user</h2>
-                            <EditUser user={selected} updateUser={updateData}/>
+                            <EditUserForm user={selected} updateUser={updateData}/>
                         </Fragment>
                     } else={() =>
                         <Fragment>
                             <h2>Add user</h2>
-                            <AddUser createUser={createData}/>
+                            <AddUserForm createUser={createData}/>
                         </Fragment>
                     }/>
                 </div>
