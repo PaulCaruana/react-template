@@ -16,7 +16,7 @@ const UserTable = ({users, editRow, deleteUser}) => {
                 <tr key={user.id}>
                     <td>{user.name}</td>
                     <td>{user.username}</td>
-                    <td style={{"whiteSpace": "nowrap"}}>
+                    <td style={{whiteSpace: "nowrap"}}>
                         <button onClick={() => editRow(user.id)} className="button muted-button">
                             Edit
                         </button>
@@ -29,6 +29,6 @@ const UserTable = ({users, editRow, deleteUser}) => {
             </tbody>
         </table>
     );
-}
+};
 
 export default UserTable;

@@ -1,11 +1,7 @@
 import axios from "axios";
 
 const RestGateway = (endPoint) => {
-
-    const fetchData = async () => {
-        return await axios.get(endPoint);
-    };
-
+    const fetchData = () => axios.get(endPoint);
 
     const readData = async (id) => {
         const response = await axios.get(`${endPoint}/${id}`);
@@ -13,21 +9,21 @@ const RestGateway = (endPoint) => {
     };
 
     const createData = async (body) => {
-        const config ={
+        const config = {
             headers: {
-                "Content-type": "application/json; charset=UTF-8"
-            }
+                "Content-type": "application/json; charset=UTF-8",
+            },
         };
         const response = await axios.post(`${endPoint}`, JSON.stringify(body), config);
         return response;
     };
 
     const updateData = async (body) => {
-        const id = body.id;
-        const config ={
+        const {id} = body;
+        const config = {
             headers: {
-                "Content-type": "application/json; charset=UTF-8"
-            }
+                "Content-type": "application/json; charset=UTF-8",
+            },
         };
         const response = await axios.put(`${endPoint}/${id}`, JSON.stringify(body), config);
         return response;
