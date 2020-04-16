@@ -6,23 +6,6 @@ class Service extends RestService {
         super("users", gateway, {});
     }
 
-/*
-    useService(options) {
-        const params = super.useService(options);
-        const {data, selectedItem, selectEdit, createData, readData, updateData, deleteData} = params;
-        return {
-            ...params,
-            users: data,
-            userSelected: selectedItem,
-            editableUser: selectEdit,
-            createUser: createData,
-            readUser: readData,
-            updateUser: updateData,
-            deleteUser: deleteData,
-        };
-    }
-*/
-
     selectEdit(id) {
         this.selectItem(id, "edit");
         this.readItem(id, "edit");
