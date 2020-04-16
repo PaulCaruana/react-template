@@ -6,9 +6,26 @@ class Service extends RestService {
         super("users", gateway, {});
     }
 
+/*
+    useService(options) {
+        const params = super.useService(options);
+        const {data, selected, editSelected, createData, readData, updateData, deleteData} = params;
+        return {
+            ...params,
+            users: data,
+            userSelected: selected,
+            editableUser: editSelected,
+            createUser: createData,
+            readUser: readData,
+            updateUser: updateData,
+            deleteUser: deleteData,
+        };
+    }
+*/
+
     editSelected(id) {
-        this.selectData(id, "edit");
-        this.readData(id, "edit");
+        this.selectItem(id, "edit");
+        this.readItem(id, "edit");
     }
 
     postUpdated() {
@@ -16,7 +33,6 @@ class Service extends RestService {
     }
 }
 
-const userGateway = RestGateway("http://localhost:5000/users");
-const userService = new Service(userGateway);
-export const {useService} = userService;
-export default userService;
+const userGateway = RestGateway(`${process.env.REACT_APP_SERVER_ENDPOINT}/users`);
+const {useService} = new Service(userGateway);
+export default useService;

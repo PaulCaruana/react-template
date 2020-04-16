@@ -26,11 +26,11 @@
     "redux": "^4.0.5"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "REACT_APP_SERVER_ENDPOINT=//localhost:5000 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "fakeServer": "json-server serverFake/generateData.js --port 5000",
+    "fakeServer": "json-server --watch serverFake/generateData.js --port 5000",
     "dev": "yarn fakeServer & yarn start"
   },
   "eslintConfig": {

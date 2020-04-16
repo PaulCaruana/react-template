@@ -21,17 +21,17 @@ export default class RestService {
         this.dispatch = dispatch;
         this.useService = this.useService.bind(this);
         const fetch = this.fetch.bind(this);
-        const selectData = this.selectData.bind(this);
+        const selectItem = this.selectItem.bind(this);
         const editSelected = this.editSelected.bind(this);
-        const createData = this.createData.bind(this);
-        const readData = this.readData.bind(this);
-        const updateData = this.updateData.bind(this);
-        const deleteData = this.deleteData.bind(this);
+        const createItem = this.createItem.bind(this);
+        const readItem = this.readItem.bind(this);
+        const updateItem = this.updateItem.bind(this);
+        const deleteItem = this.deleteItem.bind(this);
         const postUpdated = this.postUpdated.bind(this);
         const refetch = () => fetch(this.fetchOptions);
         this.refetch = refetch;
         this.actions = {
-            fetch, refetch, selectData, editSelected, createData, readData, updateData, deleteData,
+            fetch, refetch, selectItem, editSelected, createItem, readItem, updateItem, deleteItem,
         };
         this.eventEmitter.addListener(event.initialFetch, (fetchOptions) => fetch(fetchOptions));
         this.eventEmitter.on(event.doRefetch, refetch);
@@ -62,14 +62,14 @@ export default class RestService {
     }
 
     fetchInternal(options) {
-        return this.gateway.fetchData(options);
+        return this.gateway.fetchItem(options);
     }
 
-    selectData(id, mode) {
+    selectItem(id, mode) {
         dispatch({type: "selected", id, mode});
     }
 
-    async createData(options) {
+    async createItem(options) {
         dispatch({type: "creating"});
         try {
             const response = await this.createInternal(options);
@@ -82,10 +82,10 @@ export default class RestService {
     }
 
     createInternal(options) {
-        return this.gateway.createData(options);
+        return this.gateway.createItem(options);
     }
 
-    async readData(options, mode) {
+    async readItem(options, mode) {
         dispatch({type: "reading"});
         try {
             const response = await this.readInternal(options);
@@ -97,10 +97,10 @@ export default class RestService {
     }
 
     readInternal(options) {
-        return this.gateway.readData(options);
+        return this.gateway.readItem(options);
     }
 
-    async updateData(options) {
+    async updateItem(options) {
         dispatch({type: "updating"});
         try {
             const response = await this.updateInternal(options);
@@ -113,10 +113,10 @@ export default class RestService {
     }
 
     updateInternal(options) {
-        return this.gateway.updateData(options);
+        return this.gateway.updateItem(options);
     }
 
-    async deleteData(options) {
+    async deleteItem(options) {
         dispatch({type: "deleting"});
         try {
             const response = await this.deleteInternal(options);
@@ -129,7 +129,7 @@ export default class RestService {
     }
 
     deleteInternal(options) {
-        return this.gateway.deleteData(options);
+        return this.gateway.deleteItem(options);
     }
 
     postUpdated() {

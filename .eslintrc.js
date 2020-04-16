@@ -49,7 +49,7 @@ module.exports = {
       flatTernaryExpressions: false,
       // list derived from https://github.com/benjamn/ast-types/blob/HEAD/def/jsx.js
       ignoredNodes: ['JSXElement', 'JSXElement > *', 'JSXAttribute', 'JSXIdentifier', 'JSXNamespacedName', 'JSXMemberExpression', 'JSXSpreadAttribute', 'JSXExpressionContainer', 'JSXOpeningElement', 'JSXClosingElement', 'JSXFragment', 'JSXOpeningFragment', 'JSXClosingFragment', 'JSXText', 'JSXEmptyExpression', 'JSXSpreadChild'],
-      ignoreComments: false
+      ignoreComments: true
     }],
     "no-plusplus": "off",
     "no-use-before-define": "off",

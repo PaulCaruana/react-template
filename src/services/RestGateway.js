@@ -1,14 +1,14 @@
 import axios from "axios";
 
 const RestGateway = (endPoint) => {
-    const fetchData = () => axios.get(endPoint);
+    const fetchItem = () => axios.get(endPoint);
 
-    const readData = async (id) => {
+    const readItem = async (id) => {
         const response = await axios.get(`${endPoint}/${id}`);
         return response;
     };
 
-    const createData = async (body) => {
+    const createItem = async (body) => {
         const config = {
             headers: {
                 "Content-type": "application/json; charset=UTF-8",
@@ -18,7 +18,7 @@ const RestGateway = (endPoint) => {
         return response;
     };
 
-    const updateData = async (body) => {
+    const updateItem = async (body) => {
         const {id} = body;
         const config = {
             headers: {
@@ -29,13 +29,13 @@ const RestGateway = (endPoint) => {
         return response;
     };
 
-    const deleteData = async (id) => {
+    const deleteItem = async (id) => {
         const response = await axios.delete(`${endPoint}/${id}`);
         response.data.id = id;
         return response;
     };
 
-    return { fetchData, createData, readData, updateData, deleteData };
+    return { fetchItem, createItem, readItem, updateItem, deleteItem };
 };
 
 export default RestGateway;
