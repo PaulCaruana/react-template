@@ -9,12 +9,12 @@ class Service extends RestService {
 /*
     useService(options) {
         const params = super.useService(options);
-        const {data, selected, editSelected, createData, readData, updateData, deleteData} = params;
+        const {data, selectedItem, selectEdit, createData, readData, updateData, deleteData} = params;
         return {
             ...params,
             users: data,
-            userSelected: selected,
-            editableUser: editSelected,
+            userSelected: selectedItem,
+            editableUser: selectEdit,
             createUser: createData,
             readUser: readData,
             updateUser: updateData,
@@ -23,7 +23,7 @@ class Service extends RestService {
     }
 */
 
-    editSelected(id) {
+    selectEdit(id) {
         this.selectItem(id, "edit");
         this.readItem(id, "edit");
     }

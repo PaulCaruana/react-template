@@ -22,7 +22,7 @@ export default class RestService {
         this.useService = this.useService.bind(this);
         const fetch = this.fetch.bind(this);
         const selectItem = this.selectItem.bind(this);
-        const editSelected = this.editSelected.bind(this);
+        const selectEdit = this.selectEdit.bind(this);
         const createItem = this.createItem.bind(this);
         const readItem = this.readItem.bind(this);
         const updateItem = this.updateItem.bind(this);
@@ -31,7 +31,7 @@ export default class RestService {
         const refetch = () => fetch(this.fetchOptions);
         this.refetch = refetch;
         this.actions = {
-            fetch, refetch, selectItem, editSelected, createItem, readItem, updateItem, deleteItem,
+            fetch, refetch, selectItem, selectEdit, createItem, readItem, updateItem, deleteItem,
         };
         this.eventEmitter.addListener(event.initialFetch, (fetchOptions) => fetch(fetchOptions));
         this.eventEmitter.on(event.doRefetch, refetch);
@@ -66,7 +66,7 @@ export default class RestService {
     }
 
     selectItem(id, mode) {
-        dispatch({type: "selected", id, mode});
+        dispatch({type: "selectedItem", id, mode});
     }
 
     async createItem(options) {

@@ -7,7 +7,7 @@ const initialState = {
         deleting: false,
         suspense: false,
         editMode: false,
-        selected: null,
+        selectedItem: null,
         data: null,
         error: null,
     },
@@ -52,19 +52,19 @@ const reducer = (state = initialState, action) => {
         return {
             ...state,
             data: action.data,
-            selected: null,
+            selectedItem: null,
             error: null,
             fetching: false,
             suspense: false,
             mode: action.type,
         };
-    case "selected":
+    case "selectedItem":
         return {
             ...state,
-            selected: data.find(current => current.id === id),
+            selectedItem: data.find(current => current.id === id),
             error: null,
             suspense: false,
-            mode: action.mode || "selected",
+            mode: action.mode || "selectedItem",
         };
     case "created":
         return {
@@ -76,7 +76,7 @@ const reducer = (state = initialState, action) => {
                     id: (id) || data.reduce((maxId, entry) => Math.max(entry.id, maxId), -1) + 1,
                 },
             ],
-            selected: {...state.data[state.data.length - 1]},
+            selectedItem: {...state.data[state.data.length - 1]},
             error: null,
             creating: false,
             suspense: false,
@@ -86,17 +86,17 @@ const reducer = (state = initialState, action) => {
         return {
             ...state,
             data: data.map(current => (current.id === id ? payload : current)),
-            selected: payload,
+            selectedItem: payload,
             error: null,
             reading: false,
             suspense: false,
-            mode: action.mode || "selected",
+            mode: action.mode || "selectedItem",
         };
     case "updated":
         return {
             ...state,
             data: data.map(current => (current.id === id ? payload : current)),
-            selected: payload,
+            selectedItem: payload,
             error: null,
             updating: false,
             suspense: false,
@@ -106,7 +106,7 @@ const reducer = (state = initialState, action) => {
         return {
             ...state,
             data: data.filter(current => current.id !== action.id),
-            selected: null,
+            selectedItem: null,
             error: null,
             deleting: false,
             suspense: false,
@@ -128,7 +128,7 @@ const reducer = (state = initialState, action) => {
             deleting: false,
             suspense: false,
             editMode: false,
-            selected: null,
+            selectedItem: null,
             data: null,
         };
     default:
