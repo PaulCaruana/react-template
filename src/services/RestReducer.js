@@ -13,42 +13,69 @@ const initialState = {
     },
 };
 
+export const modeType = {
+    list: "list",
+    add: "add",
+    browse: "browse",
+    edit: "edit",
+    del: "delete"
+};
+
+export const event = {
+    initialFetch: "initialFetch",
+    doRefetch: "doRefetch",
+    isUpdated: "isUpdated",
+    fetching: "fetching",
+    creating: "creating",
+    reading: "reading",
+    updating: "updating",
+    deleting: "deleting",
+    fetched: "fetched",
+    selectedItem: "selectedItem",
+    created: "created",
+    read: "read",
+    updated: "updated",
+    deleted: "deleted",
+    editMode: "editMode",
+    error: "error",
+};
+
 const reducer = (state = initialState, action) => {
     const {payload} = action;
     const id = (payload) ? payload.id : action.id;
     const {items} = state;
     switch (action.type) {
-    case "fetching":
+    case event.fetching:
         return {
             ...state,
             fetching: true,
             suspense: true,
         };
-    case "creating":
+    case event.creating:
         return {
             ...state,
             creating: true,
             suspense: true,
         };
-    case "reading":
+    case event.reading:
         return {
             ...state,
             reading: true,
             suspense: true,
         };
-    case "updating":
+    case event.updating:
         return {
             ...state,
             updating: true,
             suspense: true,
         };
-    case "deleting":
+    case event.deleting:
         return {
             ...state,
             deleting: true,
             suspense: true,
         };
-    case "fetched":
+    case event.fetched:
         return {
             ...state,
             items: action.items,
@@ -58,15 +85,15 @@ const reducer = (state = initialState, action) => {
             suspense: false,
             mode: action.type,
         };
-    case "selectedItem":
+    case event.selectedItem:
         return {
             ...state,
             selectedItem: items.find(current => current.id === id),
             error: null,
             suspense: false,
-            mode: action.mode || "selectedItem",
+            mode: action.mode || modeType.browse,
         };
-    case "created":
+    case event.created:
         return {
             ...state,
             items: [
@@ -82,7 +109,7 @@ const reducer = (state = initialState, action) => {
             suspense: false,
             mode: action.type,
         };
-    case "read":
+    case event.read:
         return {
             ...state,
             items: items.map(current => (current.id === id ? payload : current)),
@@ -90,9 +117,9 @@ const reducer = (state = initialState, action) => {
             error: null,
             reading: false,
             suspense: false,
-            mode: action.mode || "selectedItem",
+            mode: action.mode || modeType.browse,
         };
-    case "updated":
+    case event.updated:
         return {
             ...state,
             items: items.map(current => (current.id === id ? payload : current)),
@@ -102,7 +129,7 @@ const reducer = (state = initialState, action) => {
             suspense: false,
             mode: action.type,
         };
-    case "deleted":
+    case event.deleted:
         return {
             ...state,
             items: items.filter(current => current.id !== action.id),
@@ -117,7 +144,7 @@ const reducer = (state = initialState, action) => {
             ...state,
             mode: action.type,
         };
-    case "error":
+    case event.error:
         return {
             ...state,
             error: action.error,

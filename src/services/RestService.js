@@ -1,16 +1,8 @@
 import MicroEmitter from "micro-emitter";
 import {useEffect} from "react";
 import {dispatch, useGlobalState} from "./Store";
+import {event} from "./RestReducer";
 
-const event = {
-    initialFetch: "initialFetch",
-    doRefetch: "doRefetch",
-    created: "created",
-    read: "read",
-    updated: "updated",
-    deleted: "deleted",
-    isUpdated: "isUpdated",
-};
 
 export default class RestService {
     constructor(resource, gateway, options) {
@@ -50,13 +42,13 @@ export default class RestService {
     }
 
     async fetch(options) {
-        dispatch({type: "fetching"});
+        dispatch({type: event.fetching});
         try {
             const response = await this.fetchInternal(options);
             this.fetchOptions = options;
-            dispatch({type: "fetched", items: response.data});
+            dispatch({type: event.fetched, items: response.data});
         } catch (e) {
-            dispatch({type: "error", error: e});
+            dispatch({type: event.error, error: e});
             console.error("Error:", e);
         }
     }
@@ -66,14 +58,14 @@ export default class RestService {
     }
 
     selectItem(id, mode) {
-        dispatch({type: "selectedItem", id, mode});
+        dispatch({type: event.selectedItem, id, mode});
     }
 
     async createItem(options) {
-        dispatch({type: "creating"});
+        dispatch({type: event.creating});
         try {
             const response = await this.createInternal(options);
-            dispatch({type: "created", payload: response.data});
+            dispatch({type: event.created, payload: response.data});
             this.emit(event.created);
             this.emit(event.isUpdated);
         } catch (e) {
@@ -86,10 +78,10 @@ export default class RestService {
     }
 
     async readItem(options, mode) {
-        dispatch({type: "reading"});
+        dispatch({type: event.reading});
         try {
             const response = await this.readInternal(options);
-            dispatch({type: "read", payload: response.data, mode});
+            dispatch({type: event.read, payload: response.data, mode});
             this.emit(event.read);
         } catch (e) {
             this.reportError(e);
@@ -101,10 +93,10 @@ export default class RestService {
     }
 
     async updateItem(options) {
-        dispatch({type: "updating"});
+        dispatch({type: event.updating});
         try {
             const response = await this.updateInternal(options);
-            dispatch({type: "updated", payload: response.data});
+            dispatch({type: event.updated, payload: response.data});
             this.emit(event.updated);
             this.emit(event.isUpdated);
         } catch (e) {
@@ -117,10 +109,10 @@ export default class RestService {
     }
 
     async deleteItem(options) {
-        dispatch({type: "deleting"});
+        dispatch({type: event.deleting});
         try {
             const response = await this.deleteInternal(options);
-            dispatch({type: "deleted", id: response.data.id});
+            dispatch({type: event.deleted, id: response.data.id});
             this.emit(event.deleted);
             this.emit(event.isUpdated);
         } catch (e) {
@@ -143,7 +135,7 @@ export default class RestService {
     reportError(e) {
         const message = e.message || "unknown error";
         const detailedMessage = (e && e.response && e.response.data) || e.stack || e;
-        dispatch({type: "error", error: message});
+        dispatch({type: event.error, error: message});
         console.error("Error:", detailedMessage);
     }
 }

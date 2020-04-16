@@ -5,6 +5,7 @@ import {If} from "react-deco";
 import useService from "./services/user/Service";
 import UserTable from "./scenes/users/Table";
 import {AddUserForm, EditUserForm} from "./scenes/users/UserForm";
+import {modeType} from "./services/RestReducer";
 
 export default function App() {
     const {
@@ -26,7 +27,7 @@ export default function App() {
                     <UserTable users={items} selectEdit={selectEdit} deleteUser={deleteItem}/>
                 </div>
                 <div className="flex-large">
-                    <If test={mode === "edit"} then={() =>
+                    <If test={mode === modeType.edit} then={() =>
                         <>
                             <h2>Edit user</h2>
                             <EditUserForm user={selectedItem} updateUser={updateItem}/>

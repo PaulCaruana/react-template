@@ -1,5 +1,6 @@
 import RestService from "../RestService";
 import RestGateway from "../RestGateway";
+import {modeType} from "../RestReducer";
 
 class Service extends RestService {
     constructor(gateway) {
@@ -7,8 +8,8 @@ class Service extends RestService {
     }
 
     selectEdit(id) {
-        this.selectItem(id, "edit");
-        this.readItem(id, "edit");
+        this.selectItem(id, modeType.edit);
+        this.readItem(id, modeType.edit);
     }
 
     postUpdated() {
