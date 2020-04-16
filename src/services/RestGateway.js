@@ -1,7 +1,13 @@
 import axios from "axios";
+import * as HttpStatus from "http-status-codes";
+
 
 const RestGateway = (endPoint) => {
-    const fetchItem = () => axios.get(endPoint);
+    const fetchItem = async () => {
+        const response = await axios.get(endPoint + 1);
+        console.log(response);
+        return response;
+    };
 
     const readItem = async (id) => {
         const response = await axios.get(`${endPoint}/${id}`);

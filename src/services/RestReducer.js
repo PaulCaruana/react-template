@@ -31,7 +31,7 @@ export const event = {
     updating: "updating",
     deleting: "deleting",
     fetched: "fetched",
-    selectedItem: "selectedItem",
+    itemSelected: "itemSelected",
     created: "created",
     read: "read",
     updated: "updated",
@@ -85,7 +85,7 @@ const reducer = (state = initialState, action) => {
             suspense: false,
             mode: action.type,
         };
-    case event.selectedItem:
+    case event.itemSelected:
         return {
             ...state,
             selectedItem: items.find(current => current.id === id),

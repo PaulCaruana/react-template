@@ -48,8 +48,7 @@ export default class RestService {
             this.fetchOptions = options;
             dispatch({type: event.fetched, items: response.data});
         } catch (e) {
-            dispatch({type: event.error, error: e});
-            console.error("Error:", e);
+            this.reportError(e);
         }
     }
 
@@ -58,7 +57,7 @@ export default class RestService {
     }
 
     selectItem(id, mode) {
-        dispatch({type: event.selectedItem, id, mode});
+        dispatch({type: event.itemSelected, id, mode});
     }
 
     async createItem(options) {
@@ -134,8 +133,9 @@ export default class RestService {
 
     reportError(e) {
         const message = e.message || "unknown error";
+        const statusText = (e && e.response && e.response.statusText) || "";
         const detailedMessage = (e && e.response && e.response.data) || e.stack || e;
-        dispatch({type: event.error, error: message});
+        dispatch({type: event.error, error: `${message} ${statusText}`});
         console.error("Error:", detailedMessage);
     }
 }
