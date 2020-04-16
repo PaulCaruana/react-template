@@ -8,7 +8,7 @@ import {AddUserForm, EditUserForm} from "./scenes/users/UserForm";
 
 export default function App() {
     const {
-        suspense, data, selectedItem, error, mode, selectEdit, createItem, updateItem, deleteItem,
+        suspense, items, selectedItem, error, mode, selectEdit, createItem, updateItem, deleteItem,
     } = useService(true);
 
     if (error) {
@@ -23,7 +23,7 @@ export default function App() {
             <div className="flex-row">
                 <div className="flex-large">
                     <h2>View users</h2>
-                    <UserTable users={data} editRow={selectEdit} deleteUser={deleteItem}/>
+                    <UserTable users={items} editRow={selectEdit} deleteUser={deleteItem}/>
                 </div>
                 <div className="flex-large">
                     <If test={mode === "edit"} then={() =>

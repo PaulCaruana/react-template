@@ -54,7 +54,7 @@ export default class RestService {
         try {
             const response = await this.fetchInternal(options);
             this.fetchOptions = options;
-            dispatch({type: "fetched", data: response.data});
+            dispatch({type: "fetched", items: response.data});
         } catch (e) {
             dispatch({type: "error", error: e});
             console.error("Error:", e);
