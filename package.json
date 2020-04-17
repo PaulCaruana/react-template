@@ -22,6 +22,8 @@
     "react-dom": "^16.13.1",
     "react-hook-form": "^5.3.1",
     "react-hooks-global-state": "^1.0.0",
+    "react-router": "^6.0.0-alpha.3",
+    "react-router-dom": "^6.0.0-alpha.3",
     "react-scripts": "3.4.1",
     "redux": "^4.0.5",
     "styled-components": "^5.1.0",
@@ -33,7 +35,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "fakeServer": "json-server --watch serverFake/generateData.js --port 5000",
+    "fakeServer": "json-server --delay=1500 --watch serverFake/generateData.js --port 5000",
     "dev": "yarn fakeServer & yarn start"
   },
   "eslintConfig": {

@@ -8,7 +8,6 @@ class Service extends RestService {
     }
 
     selectEdit(id) {
-        this.selectItem(id, modeType.edit);
         this.readItem(id, modeType.edit);
     }
 

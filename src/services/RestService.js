@@ -33,6 +33,8 @@ export default class RestService {
 
     useService(options) {
         const [state] = useGlobalState(this.resource);
+        this.state = state;
+
         useEffect(() => {
             if (options) {
                 this.emit(event.initialFetch, options);
@@ -57,7 +59,7 @@ export default class RestService {
     }
 
     selectItem(id, mode) {
-        dispatch({type: event.itemSelected, id, mode});
+        dispatch({type: event.itemSelected, id: id.toString(), mode});
     }
 
     async createItem(options) {
@@ -78,10 +80,10 @@ export default class RestService {
     }
 
     async readItem(id, mode, options) {
-        dispatch({type: event.reading, id});
+        dispatch({type: event.reading, id: id.toString()});
         try {
             const response = await this.readInternal(id, options);
-            dispatch({type: event.read, id, data: response.data, mode});
+            dispatch({type: event.read, id: id.toString(), data: response.data, mode});
             this.emit(event.read);
         } catch (e) {
             this.reportError(e);
@@ -94,10 +96,10 @@ export default class RestService {
 
     async updateItem(options) {
         const {id, data} = options;
-        dispatch({type: event.updating, id, data});
+        dispatch({type: event.updating, id: id.toString(), data});
         try {
             const response = await this.updateInternal(options);
-            dispatch({type: event.updated, id, data: response.data});
+            dispatch({type: event.updated, id: id.toString(), data: response.data});
             this.emit(event.updated);
             this.emit(event.isUpdated);
         } catch (e) {
@@ -110,7 +112,7 @@ export default class RestService {
     }
 
     async deleteItem(id, options) {
-        dispatch({type: event.deleting, id});
+        dispatch({type: event.deleting, id: id.toString()});
         try {
             const response = await this.deleteInternal(id, options);
             dispatch({type: event.deleted, id: response.data.id});

@@ -1,45 +1,19 @@
 import React from "react";
+import {BrowserRouter, Routes, Route} from "react-router-dom";
 import "./index.css";
-import {If} from "react-deco";
 
-import useService from "./services/user/Service";
-import UserTable from "./scenes/users/Table";
-import {AddUserForm, EditUserForm} from "./scenes/users/UserForm";
-import {modeType} from "./services/RestReducer";
+import ListUsers from "./pages/user/List";
+import AddUser from "./pages/user/Add";
+import EditUser from "./pages/user/Edit";
 
 export default function App() {
-    const {
-        suspense, items, selectedItem, error, mode, selectEdit, createItem, updateItem, deleteItem,
-    } = useService(true);
-
-    if (error) {
-        return <div>Error: {error}, please reload</div>;
-    }
     return (
-        <div className="container">
-            <h1>CRUD App with Hooks</h1>
-            <If test={suspense} then={() =>
-                <div>Loading...</div>
-            }/>
-            <div className="flex-row">
-                <div className="flex-large">
-                    <h2>View users</h2>
-                    <UserTable users={items} selectEdit={selectEdit} deleteUser={deleteItem}/>
-                </div>
-                <div className="flex-large">
-                    <If test={mode === modeType.edit} then={() =>
-                        <>
-                            <h2>Edit user</h2>
-                            <EditUserForm user={selectedItem} updateUser={updateItem}/>
-                        </>
-                    } else={() =>
-                        <>
-                            <h2>Add user</h2>
-                            <AddUserForm createUser={createItem}/>
-                        </>
-                    }/>
-                </div>
-            </div>
-        </div>
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<ListUsers />} />
+                <Route path="/add" element={<AddUser />} />
+                <Route path="/:id/edit" element={<EditUser />} />
+            </Routes>
+        </BrowserRouter>
     );
 }

@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from "uuid";
+import {v4 as uuidv4} from "uuid";
 
 const initialState = {
     users: {
@@ -8,12 +8,13 @@ const initialState = {
         updating: false,
         deleting: false,
         suspense: false,
-        editMode: false,
         selectedItem: null,
-        items: null,
+        items: [],
         error: null,
     },
 };
+
+const getKey = (item) => item.id.toString();
 
 export const modeType = {
     list: "list",
@@ -38,7 +39,6 @@ export const event = {
     read: "read",
     updated: "updated",
     deleted: "deleted",
-    editMode: "editMode",
     error: "error",
 };
 
@@ -49,6 +49,7 @@ const reducer = (state = initialState, action) => {
     case event.fetching:
         return {
             ...state,
+            ready: state.items && state.items.length > 0,
             fetching: true,
             suspense: true,
         };
@@ -56,6 +57,7 @@ const reducer = (state = initialState, action) => {
         return {
             ...state,
             items: action.items,
+            ready: true,
             selectedItem: null,
             error: null,
             fetching: false,
@@ -65,7 +67,7 @@ const reducer = (state = initialState, action) => {
     case event.itemSelected:
         return {
             ...state,
-            selectedItem: items.find(current => current.id === id),
+            selectedItem: items.find(current => getKey(current) === id),
             error: null,
             suspense: false,
             mode: action.mode || modeType.browse,
@@ -90,7 +92,7 @@ const reducer = (state = initialState, action) => {
         data.id = data.id || state.initId;
         return {
             ...state,
-            items: items.map(current => (current.id === state.initId ? data : current)),
+            items: items.map(current => (getKey(current) === state.initId ? data : current)),
             selectedItem: data,
             error: null,
             creating: false,
@@ -100,15 +102,17 @@ const reducer = (state = initialState, action) => {
     case event.reading:
         return {
             ...state,
-            selectedItem: items.find(current => current.id === id),
+            selectedItem: items.find(current => getKey(current) === id),
+            ready: state.selectedItem != null,
             reading: true,
             suspense: true,
         };
     case event.read:
         return {
             ...state,
-            items: items.map(current => (current.id === id ? data : current)),
+            items: items.map(current => (getKey(current) === id ? data : current)),
             selectedItem: data,
+            ready: true,
             error: null,
             reading: false,
             suspense: false,
@@ -117,14 +121,14 @@ const reducer = (state = initialState, action) => {
     case event.updating:
         return {
             ...state,
-            items: items.map(current => (current.id === id ? data : current)),
+            items: items.map(current => (getKey(current) === id ? data : current)),
             updating: true,
             suspense: true,
         };
     case event.updated:
         return {
             ...state,
-            items: items.map(current => (current.id === id ? data : current)),
+            items: items.map(current => (getKey(current) === id ? data : current)),
             selectedItem: data,
             error: null,
             updating: false,
@@ -134,7 +138,8 @@ const reducer = (state = initialState, action) => {
     case event.deleting:
         return {
             ...state,
-            items: items.filter(current => current.id !== action.id),
+            items: items.filter(current => getKey(current) !== id),
+            ready: state.items && state.items.length > 0,
             selectedItem: null,
             deleting: true,
             suspense: true,
@@ -142,6 +147,7 @@ const reducer = (state = initialState, action) => {
     case event.deleted:
         return {
             ...state,
+            ready: true,
             error: null,
             deleting: false,
             suspense: false,
@@ -159,7 +165,7 @@ const reducer = (state = initialState, action) => {
             suspense: false,
             editMode: false,
             selectedItem: null,
-            items: null,
+            items: [],
         };
     default:
         return state;
