@@ -25,14 +25,15 @@
     "react-scripts": "3.4.1",
     "redux": "^4.0.5",
     "styled-components": "^5.1.0",
-    "styled-flex-component": "^3.0.0"
+    "styled-flex-component": "^3.0.0",
+    "uuid": "^7.0.3"
   },
   "scripts": {
     "start": "REACT_APP_SERVER_ENDPOINT=//localhost:5000 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "fakeServer": "json-server --watch serverFake/generateData.js --port 5000",
+    "fakeServer": "json-server  --delay 2000 --watch serverFake/generateData.js --port 5000",
     "dev": "yarn fakeServer & yarn start"
   },
   "eslintConfig": {

@@ -81,7 +81,7 @@ export default class RestService {
         dispatch({type: event.reading, id});
         try {
             const response = await this.readInternal(id, options);
-            dispatch({type: event.read, data: response.data, mode});
+            dispatch({type: event.read, id, data: response.data, mode});
             this.emit(event.read);
         } catch (e) {
             this.reportError(e);
@@ -93,11 +93,11 @@ export default class RestService {
     }
 
     async updateItem(options) {
-        const {data} = options;
-        dispatch({type: event.updating, data});
+        const {id, data} = options;
+        dispatch({type: event.updating, id, data});
         try {
             const response = await this.updateInternal(options);
-            dispatch({type: event.updated, data: response.data});
+            dispatch({type: event.updated, id, data: response.data});
             this.emit(event.updated);
             this.emit(event.isUpdated);
         } catch (e) {

@@ -71,22 +71,27 @@ const reducer = (state = initialState, action) => {
             mode: action.mode || modeType.browse,
         };
     case event.creating:
-        return {
-            ...state,
-            creating: true,
-            suspense: true,
-        };
-    case event.created:
+        // eslint-disable-next-line no-case-declarations
+        const initId = uuidv4();
         return {
             ...state,
             items: [
                 ...state.items,
                 {
                     ...data,
-                    id: id || uuidv4(),
+                    id: initId,
                 },
             ],
-            selectedItem: {...state.items[state.items.length - 1]},
+            initId,
+            creating: true,
+            suspense: true,
+        };
+    case event.created:
+        data.id = data.id || state.initId;
+        return {
+            ...state,
+            items: items.map(current => (current.id === state.initId ? data : current)),
+            selectedItem: data,
             error: null,
             creating: false,
             suspense: false,
@@ -95,6 +100,7 @@ const reducer = (state = initialState, action) => {
     case event.reading:
         return {
             ...state,
+            selectedItem: items.find(current => current.id === id),
             reading: true,
             suspense: true,
         };
@@ -111,6 +117,7 @@ const reducer = (state = initialState, action) => {
     case event.updating:
         return {
             ...state,
+            items: items.map(current => (current.id === id ? data : current)),
             updating: true,
             suspense: true,
         };
@@ -127,14 +134,14 @@ const reducer = (state = initialState, action) => {
     case event.deleting:
         return {
             ...state,
+            items: items.filter(current => current.id !== action.id),
+            selectedItem: null,
             deleting: true,
             suspense: true,
         };
     case event.deleted:
         return {
             ...state,
-            items: items.filter(current => current.id !== action.id),
-            selectedItem: null,
             error: null,
             deleting: false,
             suspense: false,
