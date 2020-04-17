@@ -41,8 +41,8 @@ export const event = {
 };
 
 const reducer = (state = initialState, action) => {
-    const {payload} = action;
-    const id = (payload) ? payload.id : action.id;
+    const {data} = action;
+    const id = (data) ? data.id : action.id;
     const {items} = state;
     switch (action.type) {
     case event.fetching:
@@ -99,7 +99,7 @@ const reducer = (state = initialState, action) => {
             items: [
                 ...state.items,
                 {
-                    ...payload,
+                    ...data,
                     id: (id) || items.reduce((maxId, entry) => Math.max(entry.id, maxId), -1) + 1,
                 },
             ],
@@ -112,8 +112,8 @@ const reducer = (state = initialState, action) => {
     case event.read:
         return {
             ...state,
-            items: items.map(current => (current.id === id ? payload : current)),
-            selectedItem: payload,
+            items: items.map(current => (current.id === id ? data : current)),
+            selectedItem: data,
             error: null,
             reading: false,
             suspense: false,
@@ -122,8 +122,8 @@ const reducer = (state = initialState, action) => {
     case event.updated:
         return {
             ...state,
-            items: items.map(current => (current.id === id ? payload : current)),
-            selectedItem: payload,
+            items: items.map(current => (current.id === id ? data : current)),
+            selectedItem: data,
             error: null,
             updating: false,
             suspense: false,

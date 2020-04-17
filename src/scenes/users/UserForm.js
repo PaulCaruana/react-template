@@ -5,7 +5,8 @@ export const AddUserForm = ({createUser}) => {
     const {register, errors, handleSubmit} = useForm();
 
     const onSubmit = (user, e) => {
-        createUser(user);
+        const payload = {data: user};
+        createUser(payload);
         e.target.reset();
     };
     return UserForm(register, errors, handleSubmit, onSubmit);
