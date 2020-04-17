@@ -77,10 +77,10 @@ export default class RestService {
         return this.gateway.createItem(options);
     }
 
-    async readItem(options, mode) {
-        dispatch({type: event.reading});
+    async readItem(id, mode, options) {
+        dispatch({type: event.reading, id});
         try {
-            const response = await this.readInternal(options);
+            const response = await this.readInternal(id, options);
             dispatch({type: event.read, data: response.data, mode});
             this.emit(event.read);
         } catch (e) {
@@ -109,10 +109,10 @@ export default class RestService {
         return this.gateway.updateItem(options);
     }
 
-    async deleteItem(options) {
-        dispatch({type: event.deleting});
+    async deleteItem(id, options) {
+        dispatch({type: event.deleting, id});
         try {
-            const response = await this.deleteInternal(options);
+            const response = await this.deleteInternal(id, options);
             dispatch({type: event.deleted, id: response.data.id});
             this.emit(event.deleted);
             this.emit(event.isUpdated);
