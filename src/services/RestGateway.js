@@ -34,9 +34,16 @@ const RestGateway = (endPoint) => {
     };
 
     const deleteItem = async (id) => {
-        const response = await axios.delete(`${endPoint}/${id}`);
-        response.data.id = id;
-        return response;
+        try {
+            const response = await axios.delete(`${endPoint}/${id}`);
+            response.data.id = id;
+            return response;
+        } catch (e) {
+            if (e && e.response && e.response.status === 404) {
+                return e.response;
+            }
+            throw e;
+        }
     };
 
     return { fetchItem, createItem, readItem, updateItem, deleteItem };
