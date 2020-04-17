@@ -139,11 +139,6 @@ const reducer = (state = initialState, action) => {
             suspense: false,
             mode: action.type,
         };
-    case "editMode":
-        return {
-            ...state,
-            mode: action.type,
-        };
     case event.error:
         return {
             ...state,

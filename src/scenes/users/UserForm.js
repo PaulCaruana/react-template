@@ -23,8 +23,10 @@ export const EditUserForm = ({user, updateUser}) => {
     }, [user, setValue, getValues]);
 
     const onSubmit = (form, e) => {
-        const updatedUser = {...user, ...form};
-        updateUser(updatedUser, setValue);
+        const {id} = user;
+        const data = {...user, ...form};
+        const payload = {id, data};
+        updateUser(payload);
         e.target.reset();
     };
 
