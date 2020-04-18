@@ -1,19 +1,4 @@
-import { v4 as uuidv4 } from "uuid";
-
-const initialState = {
-    users: {
-        fetching: false,
-        creating: false,
-        reading: false,
-        updating: false,
-        deleting: false,
-        suspense: false,
-        editMode: false,
-        selectedItem: null,
-        items: null,
-        error: null,
-    },
-};
+import {v4 as uuidv4} from "uuid";
 
 export const modeType = {
     list: "list",
@@ -38,129 +23,163 @@ export const evt = {
     read: "read",
     updated: "updated",
     deleted: "deleted",
-    editMode: "editMode",
     error: "error",
 };
 
-const reducer = (state = initialState, action) => {
-    const {id, data} = action;
-    const {items} = state;
-    switch (action.type) {
-    case evt.fetching:
-        return {
-            ...state,
-            fetching: true,
-            suspense: true,
-        };
-    case evt.fetched:
-        return {
-            ...state,
-            items: action.items,
-            selectedItem: null,
-            error: null,
-            fetching: false,
-            suspense: false,
-            mode: action.type,
-        };
-    case evt.itemSelected:
-        return {
-            ...state,
-            selectedItem: items.find(current => current.id === id),
-            error: null,
-            suspense: false,
-            mode: action.mode || modeType.browse,
-        };
-    case evt.creating:
-        return {
-            ...state,
-            creating: true,
-            suspense: true,
-        };
-    case evt.created:
-        return {
-            ...state,
-            items: [
-                ...state.items,
-                {
-                    ...data,
-                    id: id || uuidv4(),
-                },
-            ],
-            selectedItem: {...state.items[state.items.length - 1]},
-            error: null,
-            creating: false,
-            suspense: false,
-            mode: action.type,
-        };
-    case evt.reading:
-        return {
-            ...state,
-            reading: true,
-            suspense: true,
-        };
-    case evt.read:
-        return {
-            ...state,
-            items: items.map(current => (current.id === id ? data : current)),
-            selectedItem: data,
-            error: null,
-            reading: false,
-            suspense: false,
-            mode: action.mode || modeType.browse,
-        };
-    case evt.updating:
-        return {
-            ...state,
-            updating: true,
-            suspense: true,
-        };
-    case evt.updated:
-        return {
-            ...state,
-            items: items.map(current => (current.id === id ? data : current)),
-            selectedItem: data,
-            error: null,
-            updating: false,
-            suspense: false,
-            mode: action.type,
-        };
-    case evt.deleting:
-        return {
-            ...state,
-            deleting: true,
-            suspense: true,
-        };
-    case evt.deleted:
-        return {
-            ...state,
-            items: items.filter(current => current.id !== action.id),
-            selectedItem: null,
-            error: null,
-            deleting: false,
-            suspense: false,
-            mode: action.type,
-        };
-    case evt.error:
-        return {
-            ...state,
-            error: action.error,
-            fetching: false,
-            creating: false,
-            reading: false,
-            updating: false,
-            deleting: false,
-            suspense: false,
-            editMode: false,
-            selectedItem: null,
-            items: null,
-        };
-    default:
-        return state;
-    }
+const restReducer = (resource, key = "id") => {
+    const relInitialState = {
+        fetching: false,
+        creating: false,
+        reading: false,
+        updating: false,
+        deleting: false,
+        suspense: false,
+        ready: false,
+        selectedItem: null,
+        items: [],
+        error: null,
+    };
+
+    const initialState = {[resource]: relInitialState};
+
+    const isMatch = (item, id) => {
+        if (id === undefined) {
+            throw new Error("Action must contain id");
+        }
+        const itemId = item[key];
+        if (itemId === undefined) {
+            throw new Error("Item key not found");
+        }
+        return itemId.toString() === id.toString();
+    };
+
+    const reducer = (state = initialState, action) => {
+        const {id, data} = action;
+        const {items} = state;
+        switch (action.type) {
+        case evt.fetching:
+            return {
+                ...state,
+                hasItems: state.items && state.items.length > 0,
+                fetching: true,
+                suspense: true,
+            };
+        case evt.fetched:
+            return {
+                ...state,
+                items: action.items,
+                hasItems: true,
+                selectedItem: null,
+                error: null,
+                fetching: false,
+                suspense: false,
+                mode: action.type,
+            };
+        case evt.itemSelected:
+            return {
+                ...state,
+                selectedItem: items.find(current => isMatch(current, id)),
+                error: null,
+                suspense: false,
+                mode: action.mode || modeType.browse,
+            };
+        case evt.creating:
+            // eslint-disable-next-line no-case-declarations
+            const initId = uuidv4();
+            return {
+                ...state,
+                items: [
+                    ...state.items,
+                    {
+                        ...data,
+                        id: initId,
+                    },
+                ],
+                initId,
+                creating: true,
+                suspense: true,
+            };
+        case evt.created:
+            data.id = data.id || state.initId;
+            return {
+                ...state,
+                items: items.map(current => (isMatch(current, state.initId) ? data : current)),
+                selectedItem: data,
+                error: null,
+                creating: false,
+                suspense: false,
+                mode: action.type,
+            };
+        case evt.reading:
+            return {
+                ...state,
+                selectedItem: items.find(current => isMatch(current, id)),
+                reading: true,
+                suspense: true,
+            };
+        case evt.read:
+            return {
+                ...state,
+                items: items.map(current => (isMatch(current, id) ? data : current)),
+                selectedItem: data,
+                error: null,
+                reading: false,
+                suspense: false,
+                mode: action.mode || modeType.browse,
+            };
+        case evt.updating:
+            return {
+                ...state,
+                items: items.map(current => (isMatch(current, id) ? data : current)),
+                updating: true,
+                suspense: true,
+            };
+        case evt.updated:
+            return {
+                ...state,
+                items: items.map(current => (isMatch(current, id)? data : current)),
+                selectedItem: data,
+                ready: true,
+                error: null,
+                updating: false,
+                suspense: false,
+                mode: action.type,
+            };
+        case evt.deleting:
+            return {
+                ...state,
+                items: items.filter(current => !isMatch(current, id)),
+                selectedItem: null,
+                deleting: true,
+                suspense: true,
+            };
+        case evt.deleted:
+            return {
+                ...state,
+                error: null,
+                deleting: false,
+                suspense: false,
+                mode: action.type,
+            };
+        case evt.error:
+            return {
+                ...state,
+                error: action.error,
+                fetching: false,
+                creating: false,
+                reading: false,
+                updating: false,
+                deleting: false,
+                suspense: false,
+                selectedItem: null,
+                items: [],
+            };
+        default:
+            return state;
+        }
+    };
+
+    return {reducer, initialState};
 };
 
-export default reducer;
-
-export {
-    initialState,
-};
+export default restReducer;
