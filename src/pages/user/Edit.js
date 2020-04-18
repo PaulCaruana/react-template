@@ -8,7 +8,7 @@ export default function Edit() {
     const params = useParams();
     const navigate = useNavigate();
 
-    const {selectedItem: user, selectEdit, updateItem: updateUser, error} = useService();
+    const {user, selectEdit, updateUser, error} = useService();
     useEffect(() => {
         selectEdit(params.id);
     }, [params, selectEdit]);
@@ -24,7 +24,6 @@ export default function Edit() {
     if (error) {
         return <div>Error: {error}, please go back to list page</div>;
     }
-    //console.log(user, ready)
     if (!user) {
         return null;
     }

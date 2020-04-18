@@ -7,6 +7,20 @@ class Service extends RestService {
         super("users", gateway, {});
     }
 
+    useService(options) {
+        const params = super.useService(options);
+        return {
+            ...params,
+            users: params.items,
+            hasUsers: params.hasItems,
+            user: params.selectedItem,
+            createUser: params.createItem,
+            readUser: params.readItem,
+            updateUser: params.updateItem,
+            deleteUser: params.deleteItem,
+        };
+    }
+
     selectEdit(id) {
         this.readItem(id, modeType.edit);
     }

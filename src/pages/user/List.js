@@ -5,13 +5,13 @@ import useService from "../../services/user/Service";
 import UserTable from "./Table";
 
 export default function List() {
-    const {hasItems, items, error, deleteItem} = useService(true);
+    const {hasUsers, users, error, deleteUser} = useService(true);
     const navigate = useNavigate();
 
     if (error) {
         return <div>Error: {error}, please reload</div>;
     }
-    if (!hasItems) {
+    if (!hasUsers) {
         return <div>Loading...</div>;
     }
     return (
@@ -19,7 +19,7 @@ export default function List() {
             <div className="flex-row">
                 <h1>View users</h1>
                 <UserTable
-                    users={items} selectEdit={(id) => navigate(`/${id}/edit`)} deleteUser={deleteItem}
+                    users={users} selectEdit={(id) => navigate(`/${id}/edit`)} deleteUser={deleteUser}
                 />
             </div>
         </div>
