@@ -9,7 +9,7 @@ import {modeType} from "./services/RestReducer";
 
 export default function App() {
     const {
-        suspense, items, selectedItem, error, mode, selectEdit, createItem, updateItem, deleteItem,
+        completed, items, selectedItem, error, mode, selectEdit, createItem, updateItem, deleteItem,
     } = useService(true);
 
     if (error) {
@@ -18,7 +18,7 @@ export default function App() {
     return (
         <div className="container">
             <h1>CRUD App with Hooks</h1>
-            <If test={suspense} then={() =>
+            <If test={completed} then={() =>
                 <div>Loading...</div>
             }/>
             <div className="flex-row">

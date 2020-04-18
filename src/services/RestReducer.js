@@ -33,8 +33,8 @@ const restReducer = (resource, key = "id") => {
         reading: false,
         updating: false,
         deleting: false,
-        suspense: false,
-        ready: false,
+        completed: false,
+        hasItems: false,
         selectedItem: null,
         items: [],
         error: null,
@@ -62,7 +62,7 @@ const restReducer = (resource, key = "id") => {
                 ...state,
                 hasItems: state.items && state.items.length > 0,
                 fetching: true,
-                suspense: true,
+                completed: true,
             };
         case evt.fetched:
             return {
@@ -72,7 +72,7 @@ const restReducer = (resource, key = "id") => {
                 selectedItem: null,
                 error: null,
                 fetching: false,
-                suspense: false,
+                completed: false,
                 mode: action.type,
             };
         case evt.itemSelected:
@@ -80,7 +80,7 @@ const restReducer = (resource, key = "id") => {
                 ...state,
                 selectedItem: items.find(current => isMatch(current, id)),
                 error: null,
-                suspense: false,
+                completed: false,
                 mode: action.mode || modeType.browse,
             };
         case evt.creating:
@@ -97,7 +97,7 @@ const restReducer = (resource, key = "id") => {
                 ],
                 initId,
                 creating: true,
-                suspense: true,
+                completed: true,
             };
         case evt.created:
             data.id = data.id || state.initId;
@@ -107,7 +107,7 @@ const restReducer = (resource, key = "id") => {
                 selectedItem: data,
                 error: null,
                 creating: false,
-                suspense: false,
+                completed: false,
                 mode: action.type,
             };
         case evt.reading:
@@ -115,7 +115,7 @@ const restReducer = (resource, key = "id") => {
                 ...state,
                 selectedItem: items.find(current => isMatch(current, id)),
                 reading: true,
-                suspense: true,
+                completed: true,
             };
         case evt.read:
             return {
@@ -124,7 +124,7 @@ const restReducer = (resource, key = "id") => {
                 selectedItem: data,
                 error: null,
                 reading: false,
-                suspense: false,
+                completed: false,
                 mode: action.mode || modeType.browse,
             };
         case evt.updating:
@@ -132,7 +132,7 @@ const restReducer = (resource, key = "id") => {
                 ...state,
                 items: items.map(current => (isMatch(current, id) ? data : current)),
                 updating: true,
-                suspense: true,
+                completed: true,
             };
         case evt.updated:
             return {
@@ -142,7 +142,7 @@ const restReducer = (resource, key = "id") => {
                 ready: true,
                 error: null,
                 updating: false,
-                suspense: false,
+                completed: false,
                 mode: action.type,
             };
         case evt.deleting:
@@ -151,14 +151,14 @@ const restReducer = (resource, key = "id") => {
                 items: items.filter(current => !isMatch(current, id)),
                 selectedItem: null,
                 deleting: true,
-                suspense: true,
+                completed: true,
             };
         case evt.deleted:
             return {
                 ...state,
                 error: null,
                 deleting: false,
-                suspense: false,
+                completed: false,
                 mode: action.type,
             };
         case evt.error:
@@ -170,7 +170,7 @@ const restReducer = (resource, key = "id") => {
                 reading: false,
                 updating: false,
                 deleting: false,
-                suspense: false,
+                completed: false,
                 selectedItem: null,
                 items: [],
             };
