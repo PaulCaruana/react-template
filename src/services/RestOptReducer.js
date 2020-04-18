@@ -43,11 +43,11 @@ const restReducer = (resource, key = "id") => {
     const initialState = {[resource]: relInitialState};
 
     const isMatch = (item, id) => {
-        if (!id) {
+        if (id === undefined) {
             throw new Error("Action must contain id");
         }
         const itemId = item[key];
-        if (!itemId) {
+        if (itemId === undefined) {
             throw new Error("Item key not found");
         }
         return itemId.toString() === id.toString();
@@ -60,7 +60,7 @@ const restReducer = (resource, key = "id") => {
         case event.fetching:
             return {
                 ...state,
-                ready: state.items && state.items.length > 0,
+                hasItems: state.items && state.items.length > 0,
                 fetching: true,
                 suspense: true,
             };
@@ -68,7 +68,7 @@ const restReducer = (resource, key = "id") => {
             return {
                 ...state,
                 items: action.items,
-                ready: true,
+                hasItems: true,
                 selectedItem: null,
                 error: null,
                 fetching: false,
@@ -88,7 +88,6 @@ const restReducer = (resource, key = "id") => {
             const initId = uuidv4();
             return {
                 ...state,
-                ready: state.items && state.items.length > 0,
                 items: [
                     ...state.items,
                     {
@@ -105,7 +104,6 @@ const restReducer = (resource, key = "id") => {
             return {
                 ...state,
                 items: items.map(current => (isMatch(current, state.initId) ? data : current)),
-                ready: true,
                 selectedItem: data,
                 error: null,
                 creating: false,
@@ -116,7 +114,6 @@ const restReducer = (resource, key = "id") => {
             return {
                 ...state,
                 selectedItem: items.find(current => isMatch(current, id)),
-                ready: state.selectedItem !== null,
                 reading: true,
                 suspense: true,
             };
@@ -125,7 +122,6 @@ const restReducer = (resource, key = "id") => {
                 ...state,
                 items: items.map(current => (isMatch(current, id) ? data : current)),
                 selectedItem: data,
-                ready: true,
                 error: null,
                 reading: false,
                 suspense: false,
@@ -135,7 +131,6 @@ const restReducer = (resource, key = "id") => {
             return {
                 ...state,
                 items: items.map(current => (isMatch(current, id) ? data : current)),
-                ready: state.items && state.items.length > 0,
                 updating: true,
                 suspense: true,
             };
@@ -154,7 +149,6 @@ const restReducer = (resource, key = "id") => {
             return {
                 ...state,
                 items: items.filter(current => !isMatch(current, id)),
-                ready: state.items && state.items.length > 0,
                 selectedItem: null,
                 deleting: true,
                 suspense: true,
@@ -162,7 +156,6 @@ const restReducer = (resource, key = "id") => {
         case event.deleted:
             return {
                 ...state,
-                ready: true,
                 error: null,
                 deleting: false,
                 suspense: false,
@@ -172,7 +165,6 @@ const restReducer = (resource, key = "id") => {
             return {
                 ...state,
                 error: action.error,
-                ready: false,
                 fetching: false,
                 creating: false,
                 reading: false,

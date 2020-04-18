@@ -33,14 +33,14 @@ export default class RestService {
 
     useService(options) {
         const [state] = useGlobalState(this.resource);
-        this.state = state;
+        const hasSelectItem = state.selectedItem !== null;
 
         useEffect(() => {
             if (options) {
                 this.emit(evt.initialFetch, options);
             }
         }, [options]);
-        return {...state, ...this.actions};
+        return {...state, hasSelectItem, ...this.actions};
     }
 
     async fetch(options) {

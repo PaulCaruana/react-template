@@ -5,13 +5,13 @@ import useService from "../../services/user/Service";
 import UserTable from "./Table";
 
 export default function List() {
-    const {ready, items, error, deleteItem} = useService(true);
+    const {hasItems, items, error, deleteItem} = useService(true);
     const navigate = useNavigate();
 
     if (error) {
         return <div>Error: {error}, please reload</div>;
     }
-    if (!ready) {
+    if (!hasItems) {
         return <div>Loading...</div>;
     }
     return (
