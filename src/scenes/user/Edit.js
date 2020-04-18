@@ -2,6 +2,7 @@ import React, {useEffect} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import {useForm} from "react-hook-form";
 import useService from "../../services/user/Service";
+import SaveForm from "./SaveForm";
 
 
 export default function Edit() {
@@ -37,18 +38,5 @@ export default function Edit() {
         navigate("/");
     };
 
-    return UserForm(register, errors, handleSubmit, onSubmit);
+    return SaveForm(register, errors, handleSubmit, onSubmit);
 }
-
-const UserForm = (register, errors, handleSubmit, onSubmit) => (
-    <form onSubmit={handleSubmit(onSubmit)}>
-        <label htmlFor="name">Name</label>
-        <input type="text" name="name" ref={register({required: {value: true, message: "Name is required"}})}/>
-        <div>{errors?.name?.message}</div>
-        <label htmlFor="username">User name</label>
-        <input type="text" name="username" ref={register({required: {value: true, message: "User name is required"}})}/>
-        <div>{errors?.username?.message}</div>
-
-        <input type="submit"/>
-    </form>
-);

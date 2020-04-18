@@ -2,9 +2,9 @@ import React from "react";
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 import "./index.css";
 
-import ListUsers from "./pages/user/List";
-import AddUser from "./pages/user/Add";
-import EditUser from "./pages/user/Edit";
+import ListUsers from "./scenes/user/List";
+import AddUser from "./scenes/user/Add";
+import EditUser from "./scenes/user/Edit";
 
 export default function App() {
     return (
