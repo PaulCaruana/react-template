@@ -18,6 +18,9 @@ export default function List() {
         <div className="container">
             <div className="flex-row">
                 <h1>View users</h1>
+                <button onClick={() => navigate("/add")} className="button muted-button">
+                    Add
+                </button>
                 <UserTable
                     users={users} selectEdit={(id) => navigate(`/${id}/edit`)} deleteUser={deleteUser}
                 />

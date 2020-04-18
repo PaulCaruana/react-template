@@ -3,6 +3,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {useForm} from "react-hook-form";
 import useService from "../../services/user/Service";
 import SaveForm from "./SaveForm";
+import {USERS_HOME} from ".";
 
 
 export default function Edit() {
@@ -35,8 +36,10 @@ export default function Edit() {
         const payload = {id, data};
         updateUser(payload);
         e.target.reset();
-        navigate("/");
+        navigate(USERS_HOME);
     };
 
-    return SaveForm(register, errors, handleSubmit, onSubmit);
+    const onCancel = () => navigate(USERS_HOME);
+
+    return SaveForm(register, errors, handleSubmit, onSubmit, onCancel);
 }

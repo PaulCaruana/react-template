@@ -23,7 +23,7 @@ module.exports = {
   },
   rules: {
     "semi": "error",
-    "max-params": ["error", 4],
+    "max-params": ["error", 6],
     "eqeqeq" : "error",
     "no-loop-func": "error",
     "no-new-wrappers": "error",
