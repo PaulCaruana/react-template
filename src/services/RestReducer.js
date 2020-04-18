@@ -23,7 +23,7 @@ export const modeType = {
     del: "delete"
 };
 
-export const event = {
+export const evt = {
     initialFetch: "initialFetch",
     doRefetch: "doRefetch",
     isUpdated: "isUpdated",
@@ -46,13 +46,13 @@ const reducer = (state = initialState, action) => {
     const {id, data} = action;
     const {items} = state;
     switch (action.type) {
-    case event.fetching:
+    case evt.fetching:
         return {
             ...state,
             fetching: true,
             suspense: true,
         };
-    case event.fetched:
+    case evt.fetched:
         return {
             ...state,
             items: action.items,
@@ -62,7 +62,7 @@ const reducer = (state = initialState, action) => {
             suspense: false,
             mode: action.type,
         };
-    case event.itemSelected:
+    case evt.itemSelected:
         return {
             ...state,
             selectedItem: items.find(current => current.id === id),
@@ -70,13 +70,13 @@ const reducer = (state = initialState, action) => {
             suspense: false,
             mode: action.mode || modeType.browse,
         };
-    case event.creating:
+    case evt.creating:
         return {
             ...state,
             creating: true,
             suspense: true,
         };
-    case event.created:
+    case evt.created:
         return {
             ...state,
             items: [
@@ -92,13 +92,13 @@ const reducer = (state = initialState, action) => {
             suspense: false,
             mode: action.type,
         };
-    case event.reading:
+    case evt.reading:
         return {
             ...state,
             reading: true,
             suspense: true,
         };
-    case event.read:
+    case evt.read:
         return {
             ...state,
             items: items.map(current => (current.id === id ? data : current)),
@@ -108,13 +108,13 @@ const reducer = (state = initialState, action) => {
             suspense: false,
             mode: action.mode || modeType.browse,
         };
-    case event.updating:
+    case evt.updating:
         return {
             ...state,
             updating: true,
             suspense: true,
         };
-    case event.updated:
+    case evt.updated:
         return {
             ...state,
             items: items.map(current => (current.id === id ? data : current)),
@@ -124,13 +124,13 @@ const reducer = (state = initialState, action) => {
             suspense: false,
             mode: action.type,
         };
-    case event.deleting:
+    case evt.deleting:
         return {
             ...state,
             deleting: true,
             suspense: true,
         };
-    case event.deleted:
+    case evt.deleted:
         return {
             ...state,
             items: items.filter(current => current.id !== action.id),
@@ -140,7 +140,7 @@ const reducer = (state = initialState, action) => {
             suspense: false,
             mode: action.type,
         };
-    case event.error:
+    case evt.error:
         return {
             ...state,
             error: action.error,

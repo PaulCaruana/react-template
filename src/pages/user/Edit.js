@@ -8,13 +8,12 @@ export default function Edit() {
     const params = useParams();
     const navigate = useNavigate();
 
-    const {selectedItem: user, selectEdit, updateItem: updateUser, error} = useService();
+    const {ready, selectedItem: user, selectEdit, updateItem: updateUser, error} = useService();
     useEffect(() => {
         selectEdit(params.id);
     }, [params, selectEdit]);
 
     const {register, setValue, getValues, errors, handleSubmit} = useForm();
-
     useEffect(() => {
         const fields = getValues();
         for (const fieldName in fields) {
@@ -25,6 +24,7 @@ export default function Edit() {
     if (error) {
         return <div>Error: {error}, please go back to list page</div>;
     }
+    console.log(user, ready)
     if (!user) {
         return null;
     }

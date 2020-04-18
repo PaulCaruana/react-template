@@ -1,7 +1,7 @@
 import MicroEmitter from "micro-emitter";
 import {useEffect} from "react";
 import {dispatch, useGlobalState} from "./Store";
-import {event} from "./RestReducer";
+import {evt} from "./RestReducer";
 
 
 export default class RestService {
@@ -25,10 +25,10 @@ export default class RestService {
         this.actions = {
             fetch, refetch, selectItem, selectEdit, createItem, readItem, updateItem, deleteItem,
         };
-        this.eventEmitter.addListener(event.initialFetch, (fetchOptions) => fetch(fetchOptions));
-        this.eventEmitter.on(event.doRefetch, refetch);
-        this.eventEmitter.on(event.isUpdated, postUpdated);
-        this.event = event;
+        this.eventEmitter.addListener(evt.initialFetch, (fetchOptions) => fetch(fetchOptions));
+        this.eventEmitter.on(evt.doRefetch, refetch);
+        this.eventEmitter.on(evt.isUpdated, postUpdated);
+        this.event = evt;
     }
 
     useService(options) {
@@ -37,18 +37,18 @@ export default class RestService {
 
         useEffect(() => {
             if (options) {
-                this.emit(event.initialFetch, options);
+                this.emit(evt.initialFetch, options);
             }
         }, [options]);
         return {...state, ...this.actions};
     }
 
     async fetch(options) {
-        dispatch({type: event.fetching});
+        dispatch({type: evt.fetching});
         try {
             const response = await this.fetchInternal(options);
             this.fetchOptions = options;
-            dispatch({type: event.fetched, items: response.data});
+            dispatch({type: evt.fetched, items: response.data});
         } catch (e) {
             this.reportError(e);
         }
@@ -59,17 +59,17 @@ export default class RestService {
     }
 
     selectItem(id, mode) {
-        dispatch({type: event.itemSelected, id: id.toString(), mode});
+        dispatch({type: evt.itemSelected, id: id.toString(), mode});
     }
 
     async createItem(options) {
         const {data} = options;
-        dispatch({type: event.creating, data});
+        dispatch({type: evt.creating, data});
         try {
             const response = await this.createInternal(options);
-            dispatch({type: event.created, data: response.data});
-            this.emit(event.created);
-            this.emit(event.isUpdated);
+            dispatch({type: evt.created, data: response.data});
+            this.emit(evt.created);
+            this.emit(evt.isUpdated);
         } catch (e) {
             this.reportError(e);
         }
@@ -80,11 +80,11 @@ export default class RestService {
     }
 
     async readItem(id, mode, options) {
-        dispatch({type: event.reading, id: id.toString()});
+        dispatch({type: evt.reading, id: id.toString()});
         try {
             const response = await this.readInternal(id, options);
-            dispatch({type: event.read, id: id.toString(), data: response.data, mode});
-            this.emit(event.read);
+            dispatch({type: evt.read, id: id.toString(), data: response.data, mode});
+            this.emit(evt.read);
         } catch (e) {
             this.reportError(e);
         }
@@ -96,12 +96,12 @@ export default class RestService {
 
     async updateItem(options) {
         const {id, data} = options;
-        dispatch({type: event.updating, id: id.toString(), data});
+        dispatch({type: evt.updating, id: id.toString(), data});
         try {
             const response = await this.updateInternal(options);
-            dispatch({type: event.updated, id: id.toString(), data: response.data});
-            this.emit(event.updated);
-            this.emit(event.isUpdated);
+            dispatch({type: evt.updated, id: id.toString(), data: response.data});
+            this.emit(evt.updated);
+            this.emit(evt.isUpdated);
         } catch (e) {
             this.reportError(e);
         }
@@ -112,12 +112,12 @@ export default class RestService {
     }
 
     async deleteItem(id, options) {
-        dispatch({type: event.deleting, id: id.toString()});
+        dispatch({type: evt.deleting, id: id.toString()});
         try {
             const response = await this.deleteInternal(id, options);
-            dispatch({type: event.deleted, id: response.data.id});
-            this.emit(event.deleted);
-            this.emit(event.isUpdated);
+            dispatch({type: evt.deleted, id: response.data.id});
+            this.emit(evt.deleted);
+            this.emit(evt.isUpdated);
         } catch (e) {
             this.reportError(e);
         }
@@ -139,7 +139,7 @@ export default class RestService {
         const message = e.message || "unknown error";
         const statusText = (e && e.response && e.response.statusText) || "";
         const detailedMessage = (e && e.response && e.response.data) || e.stack || e;
-        dispatch({type: event.error, error: `${message} ${statusText}`});
+        dispatch({type: evt.error, error: `${message} ${statusText}`});
         console.error("Error:", detailedMessage);
     }
 }
