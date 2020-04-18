@@ -36,7 +36,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "fakeServer": "json-server --delay=100 --watch serverFake/generateData.js --port 5000",
-    "dev": "yarn fakeServer & yarn start"
+    "dev": "yarn fakeServer & yarn start",
+    "storybook": "start-storybook -p 9009 -s public",
+    "build-storybook": "build-storybook -s public"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -54,6 +56,12 @@
     ]
   },
   "devDependencies": {
+    "@storybook/addon-actions": "^5.3.18",
+    "@storybook/addon-knobs": "^5.3.18",
+    "@storybook/addon-links": "^5.3.18",
+    "@storybook/addons": "^5.3.18",
+    "@storybook/preset-create-react-app": "^2.1.1",
+    "@storybook/react": "^5.3.18",
     "eslint-config-airbnb-base": "^14.1.0",
     "faker": "^4.1.0",
     "json-server": "^0.16.1",

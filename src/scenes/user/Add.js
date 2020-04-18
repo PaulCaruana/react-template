@@ -3,7 +3,7 @@ import {useForm} from "react-hook-form";
 
 import {useNavigate} from "react-router-dom";
 import useService from "../../services/user/Service";
-import {USERS_HOME} from ".";
+import {USERS_HOME_PAGE} from ".";
 import SaveForm from "./SaveForm";
 
 export default function Add() {
@@ -18,10 +18,10 @@ export default function Add() {
         const payload = {data: user};
         createUser(payload);
         e.target.reset();
-        navigate(USERS_HOME);
+        navigate(USERS_HOME_PAGE);
     };
 
-    const onCancel = () => navigate(USERS_HOME);
+    const onCancel = () => navigate(USERS_HOME_PAGE);
 
     return SaveForm(register, errors, handleSubmit, onSubmit, onCancel);
 }
