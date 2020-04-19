@@ -64,7 +64,8 @@ module.exports = {
     "arrow-parens": "off",
     "comma-dangle": "off",
     quotes: ["error", "double"],
-    "eol-last": "off"
+    "eol-last": "off",
+    "import/no-extraneous-dependencies": "off",
   },
   "plugins": [
     "react"
