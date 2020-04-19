@@ -53,6 +53,20 @@ const restReducer = (resource, key = "id") => {
         return itemId.toString() === id.toString();
     };
 
+    const deleteItem = (items, id) => {
+        console.time("start")
+        const deleteIndex = items.findIndex(current => isMatch(current, id));
+        if (deleteIndex === -1) {
+            return items;
+        }
+        const results = [
+            ...items.slice(0, deleteIndex),
+            ...items.slice(deleteIndex + 1)
+        ];
+        console.timeEnd("start")
+        return results;
+    };
+
     const reducer = (state = initialState, action) => {
         const {id, data} = action;
         const {items} = state;
@@ -130,7 +144,7 @@ const restReducer = (resource, key = "id") => {
         case evt.updating:
             return {
                 ...state,
-                items: items.map(current => (isMatch(current, id) ? data : current)),
+                items: items.map(current => (isMatch(current, id)? data : current)),
                 updating: true,
                 completed: true,
             };
@@ -148,7 +162,7 @@ const restReducer = (resource, key = "id") => {
         case evt.deleting:
             return {
                 ...state,
-                items: items.filter(current => !isMatch(current, id)),
+                items: deleteItem(items, id),
                 selectedItem: null,
                 deleting: true,
                 completed: true,

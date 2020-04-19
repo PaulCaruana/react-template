@@ -66,6 +66,7 @@ module.exports = {
     quotes: ["error", "double"],
     "eol-last": "off",
     "import/no-extraneous-dependencies": "off",
+    "space-infix-ops": "off",
   },
   "plugins": [
     "react"
