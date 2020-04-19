@@ -20,6 +20,7 @@
     "axios": "^0.19.2",
     "micro-emitter": "^1.2.2",
     "react": "^16.13.1",
+    "react-data-table-component": "^6.7.1",
     "react-deco": "^0.11.0",
     "react-dom": "^16.13.1",
     "react-hook-form": "^5.3.1",
@@ -37,7 +38,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "fakeServer": "json-server --delay=100 --watch serverFake/generateData.js --port 5000",
+    "fakeServer": "json-server --delay=0 --watch serverFake/generateData.js --port 5000",
     "dev": "yarn fakeServer & yarn start",
     "storybook": "start-storybook -p 9009 -s public",
     "build-storybook": "build-storybook -s public"

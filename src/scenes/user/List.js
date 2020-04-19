@@ -8,6 +8,8 @@ import UserTable from "./Table";
 export default function List() {
     const {hasUsers, users, error, deleteUser} = useService(true);
     const navigate = useNavigate();
+    const addUser = () => navigate(USERS_ADD_PAGE);
+    const editUser = (id) => navigate(`/${id}${USERS_EDIT_PAGE}`);
 
     if (error) {
         return <div>Error: {error}, please reload</div>;
@@ -18,12 +20,8 @@ export default function List() {
     return (
         <div className="container">
             <div className="flex-row">
-                <h1>View users</h1>
-                <button onClick={() => navigate(USERS_ADD_PAGE)} className="button muted-button">
-                    Add
-                </button>
                 <UserTable
-                    users={users} selectEdit={(id) => navigate(`/${id}${USERS_EDIT_PAGE}`)} deleteUser={deleteUser}
+                    users={users} addUser={addUser} editUser={editUser} deleteUser={deleteUser}
                 />
             </div>
         </div>

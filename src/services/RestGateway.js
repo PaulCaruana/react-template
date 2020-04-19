@@ -33,6 +33,16 @@ const RestGateway = (endPoint) => {
         return response;
     };
 
+    const deleteItems = async (ids) => {
+        const promises = [];
+        for (const id of ids) {
+            const promise = deleteItem(id);
+            promises.push(promise);
+        }
+        const responses = axios.all(promises);
+        return responses;
+    };
+
     const deleteItem = async (id) => {
         try {
             const response = await axios.delete(`${endPoint}/${id}`);
@@ -46,7 +56,7 @@ const RestGateway = (endPoint) => {
         }
     };
 
-    return { fetchItem, createItem, readItem, updateItem, deleteItem };
+    return { fetchItem, createItem, readItem, updateItem, deleteItem, deleteItems };
 };
 
 export default RestGateway;

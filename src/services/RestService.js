@@ -3,7 +3,6 @@ import {useEffect} from "react";
 import {dispatch, useGlobalState} from "./Store";
 import {evt} from "./RestReducer";
 
-
 export default class RestService {
     constructor(resource, gateway, options) {
         this.resource = resource;
@@ -110,10 +109,29 @@ export default class RestService {
         return this.gateway.updateItem(options);
     }
 
-    async deleteItem(id, options) {
+    deleteItem(ids, options) {
+        if (ids === null) {
+            return null;
+        }
+        if (Array.isArray(ids)) {
+            const num = ids.length;
+            if (num === 0) {
+                return null;
+            }
+            if (num === 1) {
+                return this.deleteAnItem(ids[0], options);
+            }
+            if (ids.length > 1) {
+                return this.deleteItems(ids, options);
+            }
+        }
+        return this.deleteAnItem(ids, options);
+    }
+
+    async deleteAnItem(id, options) {
         dispatch({type: evt.deleting, id: id.toString()});
         try {
-            const response = await this.deleteInternal(id, options);
+            const response = await this.deleteAnItemInternal(id, options);
             dispatch({type: evt.deleted, id: response.data.id});
             this.emit(evt.deleted);
             this.emit(evt.isUpdated);
@@ -122,16 +140,32 @@ export default class RestService {
         }
     }
 
-    deleteInternal(options) {
-        return this.gateway.deleteItem(options);
+    deleteAnItemInternal(id, options) {
+        return this.gateway.deleteItem(id, options);
+    }
+
+    async deleteItems(ids, options) {
+        dispatch({type: evt.deletingMany, ids});
+        try {
+            await this.deleteItemsInternal(ids, options);
+            dispatch({type: evt.deletedMany, ids});
+            this.emit(evt.deletedMany);
+            this.emit(evt.isUpdated);
+        } catch (e) {
+            this.reportError(e);
+        }
+    }
+
+    deleteItemsInternal(id, options) {
+        return this.gateway.deleteItems(id, options);
     }
 
     postUpdated() {
         // Placeholder
     }
 
-    emit(evt, options) {
-        this.eventEmitter.emit(evt, options);
+    emit(e, options) {
+        this.eventEmitter.emit(e, options);
     }
 
     reportError(e) {

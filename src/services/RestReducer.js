@@ -17,12 +17,14 @@ export const evt = {
     reading: "reading",
     updating: "updating",
     deleting: "deleting",
+    deletingMany: "deletingMany",
     fetched: "fetched",
     itemSelected: "itemSelected",
     created: "created",
     read: "read",
     updated: "updated",
     deleted: "deleted",
+    deletedMany: "deletedMany",
     error: "error",
 };
 
@@ -33,6 +35,7 @@ const restReducer = (resource, key = "id") => {
         reading: false,
         updating: false,
         deleting: false,
+        deletingMany: false,
         completed: false,
         hasItems: false,
         selectedItem: null,
@@ -53,8 +56,23 @@ const restReducer = (resource, key = "id") => {
         return itemId.toString() === id.toString();
     };
 
+    const isMatchMany = (item, ids) => {
+        if (ids === undefined) {
+            throw new Error("Action must contain ids");
+        }
+        const itemId = item[key];
+        if (itemId === undefined) {
+            throw new Error("Item key not found");
+        }
+        for (const id of ids) {
+            if (itemId.toString() === id.toString()) {
+                return true;
+            }
+        }
+        return false;
+    };
+
     const deleteItem = (items, id) => {
-        console.time("start")
         const deleteIndex = items.findIndex(current => isMatch(current, id));
         if (deleteIndex === -1) {
             return items;
@@ -63,7 +81,11 @@ const restReducer = (resource, key = "id") => {
             ...items.slice(0, deleteIndex),
             ...items.slice(deleteIndex + 1)
         ];
-        console.timeEnd("start")
+        return results;
+    };
+
+    const deleteItems = (items, ids) => {
+        const results = items.filter(current => !isMatchMany(current, ids));
         return results;
     };
 
@@ -172,6 +194,22 @@ const restReducer = (resource, key = "id") => {
                 ...state,
                 error: null,
                 deleting: false,
+                completed: false,
+                mode: action.type,
+            };
+        case evt.deletingMany:
+            return {
+                ...state,
+                items: deleteItems(items, action.ids),
+                selectedItem: null,
+                deleting: true,
+                completed: true,
+            };
+        case evt.deletedMany:
+            return {
+                ...state,
+                error: null,
+                deletingMany: false,
                 completed: false,
                 mode: action.type,
             };
