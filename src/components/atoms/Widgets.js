@@ -6,13 +6,14 @@ export const Card = styled.div`
   overflow: hidden;
   padding: 16px;
   margin: 16px;
-  width: calc(700px - 32px);
+  width: calc(${props => ((props.width) ? (Number.isNaN(props.width) ? props.width : `${props.width}px`) : "100%")} - 32px);
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.05), 0 0px 40px rgba(0, 0, 0, 0.08);
   border-radius: 5px;
   box-sizing: border-box;
 `;
 
 export const FormHeading = styled.h3`
+  margin: 10px 0px;
   font-size: 1.825em;
   font-weight: 300;
   text-align: center;

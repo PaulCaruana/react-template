@@ -4,6 +4,7 @@ import {useForm} from "react-hook-form";
 import useService from "../../services/user/Service";
 import SaveForm from "./SaveForm";
 import {USERS_HOME_PAGE} from ".";
+import {Card, FormHeading} from "../../components/atoms/Widgets";
 
 
 export default function Edit() {
@@ -40,6 +41,7 @@ export default function Edit() {
     };
 
     const onCancel = () => navigate(USERS_HOME_PAGE);
+    const props = {title: "Edit user", register, errors, handleSubmit, onSubmit, onCancel};
 
-    return SaveForm(register, errors, handleSubmit, onSubmit, onCancel);
+    return <SaveForm {...props} />;
 }

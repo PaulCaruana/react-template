@@ -22,6 +22,7 @@ export default function Add() {
     };
 
     const onCancel = () => navigate(USERS_HOME_PAGE);
+    const props = {title: "Add user", register, errors, handleSubmit, onSubmit, onCancel};
 
-    return SaveForm(register, errors, handleSubmit, onSubmit, onCancel);
+    return <SaveForm {...props} />;
 }
