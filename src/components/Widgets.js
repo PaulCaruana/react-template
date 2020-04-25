@@ -2,6 +2,8 @@
 import React from "react";
 import styled, {css} from "styled-components";
 
+const fontWeight = (weight) => `font-weight: ${weight}`;
+
 export const Card = styled.div`
   overflow: hidden;
   padding: 16px;
@@ -18,7 +20,6 @@ export const FormHeading = styled.h3`
   font-weight: 300;
   text-align: center;
 `;
-
 export const FormButton = styled.button`
   color: #fff;
   background-color: ${props => ((props.color === "secondary") ? "blue;" : "#e91e63;")};

@@ -16,7 +16,7 @@ import {
     CardOptionsNote,
     FormButton,
     CardLink
-} from "../../components/atoms/Widgets";
+} from "../../components/Widgets";
 import "../../index.css";
 
 
@@ -27,14 +27,8 @@ const SampleForm = () => (
                 Sample Heading
             </FormHeading>
             <Box display="flex" justifyContent="space-evenly">
-                <TextField
-                    label="None"
-                    id="margin-none"
-                    fullWidth
-                    defaultValue="Default Value"
-                    helperText="Some important text"
-                    margin="normal"
-                />
+                <div>Widget1</div>
+                <div>Widget4</div>
             </Box>
             <Box display="flex" justifyContent="space-evenly">
                 <TextField

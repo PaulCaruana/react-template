@@ -2,6 +2,7 @@ import axios from "axios";
 
 const RestGateway = (endPoint) => {
     const fetchItem = async () => {
+        console.log("fetching..")
         const response = await axios.get(endPoint);
         return response;
     };

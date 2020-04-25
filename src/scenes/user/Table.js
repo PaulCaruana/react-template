@@ -66,6 +66,7 @@ const UserTable = ({users, addUser, editUser, deleteUser}) => {
             defaultSortField="name"
             actions={actions}
             selectableRows
+            selectableRowsComponent={Checkbox}
             onSelectedRowsChange={handleChange}
             contextActions={contextActions(deleteAll)}
             highlightOnHover

@@ -187,6 +187,7 @@ const restReducer = (resource, key = "id") => {
                 items: deleteItem(items, id),
                 selectedItem: null,
                 deleting: true,
+                deleted: false,
                 completed: true,
             };
         case evt.deleted:
@@ -194,6 +195,7 @@ const restReducer = (resource, key = "id") => {
                 ...state,
                 error: null,
                 deleting: false,
+                deleted: true,
                 completed: false,
                 mode: action.type,
             };
@@ -203,13 +205,15 @@ const restReducer = (resource, key = "id") => {
                 items: deleteItems(items, action.ids),
                 selectedItem: null,
                 deleting: true,
+                deleted: false,
                 completed: true,
             };
         case evt.deletedMany:
             return {
                 ...state,
                 error: null,
-                deletingMany: false,
+                deleting: false,
+                deleted: true,
                 completed: false,
                 mode: action.type,
             };
