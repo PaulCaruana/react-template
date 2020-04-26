@@ -22,4 +22,3 @@ export const ToButtons = () => (
 ToButtons.story = {
     name: "Button styles",
 };
-

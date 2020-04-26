@@ -2,7 +2,6 @@ import React, {memo} from "react";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import {PanelHeader as Header} from "./CardPanelStyles";
-//import {RowBox} from "../common/CommonStyles";
 
 export {Panel} from "./CardPanelStyles";
 export {PanelBody} from "./CardPanelStyles";
@@ -22,22 +21,3 @@ export const WindowHeader = memo(({children, title, onCancel, text, background})
     </Header>
 ));
 WindowHeader.displayName = "WindowHeader";
-
-/*
-
-export const PanelRow = (props) => {
-    const inline = props.inline || props.inline === "true";
-    const flexDirection = (inline) ? "row" : "column";
-    const justifyContent = props.justifyContent || "space-between";
-    const flexDft = (justifyContent === "space-between")? "auto" : "none";
-    const flex = props.flex || flexDft;
-    const className = `rowbox-${flexDirection} rowbox-${justifyContent}`;
-
-    return (
-        <RowBox display="flex" className={className} flex={flex} flexDirection={flexDirection} justifyContent={justifyContent}>
-            {props.children}
-        </RowBox>
-    );
-};
-
-*/

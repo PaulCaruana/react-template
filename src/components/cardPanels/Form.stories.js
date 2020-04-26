@@ -12,7 +12,7 @@ export default {
 
 export const ToForms = () => (
     <>
-        <Panel>
+        <Panel width={500}>
             <Header title="Horizontal Form" onCancel={() => console.log("Cancelled")}/>
             <Body>
                 <>

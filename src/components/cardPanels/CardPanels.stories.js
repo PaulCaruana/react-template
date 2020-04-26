@@ -1,6 +1,5 @@
 import React from "react";
 import {Panel, WindowHeader, PanelBody} from "./CardPanels";
-// import {Row} from "../CommonStyles";
 import {Row} from "../common/Common";
 
 export default {

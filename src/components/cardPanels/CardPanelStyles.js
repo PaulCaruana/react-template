@@ -2,19 +2,25 @@ import {memo} from "react";
 import styled from "styled-components";
 import {colors, mainRGBColor, borderShadow} from "../common/CommonStyles";
 
+const getValue = (value, dft) => {
+    if (value === undefined) {
+        return dft;
+    }
+    return (Number.isNaN(value) ? value : `${value}px`);
+};
+
 export const Panel = memo(styled.div`
     background: ${props => `${mainRGBColor(props.background, 1, colors.background.main)}`};
     border-radius: 6px;
     border: 0;
     box-shadow: ${props => `${borderShadow(props.borderColor)}`};
     color: ${props => `${mainRGBColor(props.text, 0.87, colors.text.main)}`};
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 30px;
-    margin-top: 30px;
+    -display: flex;
+    -flex-direction: column;
+    margin: ${props => getValue(props.margin, "2.14em")};
     min-width: 0;
     position: relative;
-    width: 100%;
+    width: calc(${props => getValue(props.width, "100%")} - ${props => getValue(props.margin, "2.14em")} - ${props => getValue(props.margin, "2.14em")});
     word-wrap: break-word;
   }
 `);

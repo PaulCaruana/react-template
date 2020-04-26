@@ -4,7 +4,6 @@ import {useForm} from "react-hook-form";
 import useService from "../../services/user/Service";
 import SaveForm from "./SaveForm";
 import {USERS_HOME_PAGE} from ".";
-import {Card, FormHeading} from "../../components/atoms/Widgets";
 
 
 export default function Edit() {
