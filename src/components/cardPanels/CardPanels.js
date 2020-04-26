@@ -30,9 +30,10 @@ export const PanelRow = (props) => {
     const justifyContent = props.justifyContent || "space-between";
     const flexDft = (justifyContent === "space-between")? "auto" : "none";
     const flex = props.flex || flexDft;
+    const className = `rowbox-${flexDirection} rowbox-${justifyContent}`;
 
     return (
-        <RowBox display="flex" flex={flex} flexDirection={flexDirection} justifyContent={justifyContent}>
+        <RowBox display="flex" className={className} flex={flex} flexDirection={flexDirection} justifyContent={justifyContent}>
             {props.children}
         </RowBox>
     );

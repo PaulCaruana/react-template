@@ -47,8 +47,7 @@ export const PanelBody = memo(styled.div`
     color: ${props => `${mainRGBColor(props.text, 0.87, "inherit")}`};
     padding: 1.0em 1.43em;
     border: 0;
-    display: flex;
-    flex-direction: column;
+    flex: 1 1 auto;
     position: relative;
     &:first-child {
         border-top-left-radius: inherit;

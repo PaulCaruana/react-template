@@ -1,6 +1,18 @@
 import styled from "styled-components";
 import Box from "@material-ui/core/Box";
 
+export const RowStyle = styled(Box)`
+    &.dir-column-rowtype.align-center-rowtype > * {
+        margin-left: auto;
+        margin-right: auto;
+    }
+    & > * {
+        flex: ${props => `${(props.align === "equal") ? "1 1 auto" : "unset"}`};
+    }
+    &.dir-row-rowtype > :not(:last-child) {
+        margin-right: ${props => `${props.gap || "2.14em"}`};
+    }
+`;
 export const RowBox = styled(Box)`
     & > * {
         flex: inherit;

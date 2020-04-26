@@ -1,7 +1,9 @@
 import React from "react";
 import TextField from "@material-ui/core/TextField";
 
-import {Panel, WindowHeader, PanelBody, PanelRow as Row } from "./CardPanels";
+import {Panel, WindowHeader as Header, PanelBody as Body} from "./CardPanels";
+import {Row} from "../common/Common";
+import {Button} from "../buttons/ButtonStyles";
 
 export default {
     title: "Forms",
@@ -11,10 +13,10 @@ export default {
 export const ToForms = () => (
     <>
         <Panel>
-            <WindowHeader title="Horizontal Form" onCancel={() => console.log("Cancelled")}/>
-            <PanelBody>
+            <Header title="Horizontal Form" onCancel={() => console.log("Cancelled")}/>
+            <Body>
                 <>
-                    <Row inline="true" >
+                    <Row align={"equal"}>
                         <TextField
                             label="None"
                             id="margin-none"
@@ -37,11 +39,10 @@ export const ToForms = () => (
                             margin="normal"
                         />
                     </Row>
-                    <Row inline="true">
+                    <Row >
                         <TextField
                             label="None"
                             id="margin-none3"
-                            fullWidth
                             defaultValue="Default Value"
                             helperText="Some important text"
                             margin="normal"
@@ -49,13 +50,16 @@ export const ToForms = () => (
                         <TextField
                             label="None"
                             id="margin-none4"
-                            fullWidth
                             defaultValue="Default Value"
                             helperText="Some important text"
                             margin="normal"
                         />
-                    </Row></>
-            </PanelBody>
+                    </Row>
+                    <Row>
+                        <Button color="action" type="submit">Save</Button>
+                    </Row>
+                </>
+            </Body>
         </Panel>
     </>
 );

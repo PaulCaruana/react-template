@@ -4,7 +4,7 @@ import {mainColor, boxShadow, boxShadowHilite} from "../CommonStyles";
 
 
 // eslint-disable-next-line import/prefer-default-export
-export const FormButton = memo(styled.button`
+export const Button = memo(styled.button`
   color: #fff;
   background-color: ${props => `${mainColor(props.color)}`};
   border: 0;
