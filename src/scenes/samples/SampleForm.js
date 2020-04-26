@@ -27,8 +27,14 @@ const SampleForm = () => (
                 Sample Heading
             </FormHeading>
             <Box display="flex" justifyContent="space-evenly">
-                <div>Widget1</div>
-                <div>Widget4</div>
+                <TextField
+                    label="None"
+                    id="margin-none"
+                    fullWidth
+                    defaultValue="Default Value"
+                    helperText="Some important text"
+                    margin="normal"
+                />
             </Box>
             <Box display="flex" justifyContent="space-evenly">
                 <TextField

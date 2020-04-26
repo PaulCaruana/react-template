@@ -22,10 +22,10 @@ export const Panel = memo(styled.div`
 
 export const PanelHeader = memo(styled.div`
     align-items: center;
-    min-height: 4.5rem;
+    min-height: 2.14em;
     background: ${props => `${mainRGBColor(props.background, 1, "inherit")}`};
     color: ${props => `${mainRGBColor(props.text, 0.87, "inherit")}`};
-    padding: 0 1.5rem;
+    padding: 0 1.07em;
     border: 0;
     display: flex;
     justify-content: space-between;
@@ -45,7 +45,7 @@ export const PanelHeader = memo(styled.div`
 export const PanelBody = memo(styled.div`
     background: ${props => `${mainRGBColor(props.background, 1, "inherit")}`};
     color: ${props => `${mainRGBColor(props.text, 0.87, "inherit")}`};
-    padding: 1.5rem 2rem;
+    padding: 1.0em 1.43em;
     border: 0;
     display: flex;
     flex-direction: column;

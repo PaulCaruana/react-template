@@ -1,9 +1,15 @@
 import styled from "styled-components";
-import { palette, spacing } from "@material-ui/system";
+import Box from "@material-ui/core/Box";
 
-export const Box = styled.div`${spacing}${palette}`;
-console.log("spacing=", spacing)
-console.log("palette=", palette)
+export const RowBox = styled(Box)`
+    & > * {
+        flex: inherit;
+    }
+    & > * + * {
+        margin-left: 2.14em !important;
+    }
+`;
+
 const gray = [
     "#999999",
     "#777777",
