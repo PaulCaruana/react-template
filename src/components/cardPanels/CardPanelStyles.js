@@ -1,6 +1,6 @@
 import {memo} from "react";
 import styled from "styled-components";
-import {colors, mainRGBColor, borderShadow} from "../CommonStyles";
+import {colors, mainRGBColor, borderShadow} from "../common/CommonStyles";
 
 export const Panel = memo(styled.div`
     background: ${props => `${mainRGBColor(props.background, 1, colors.background.main)}`};

@@ -2,7 +2,7 @@ import React, {memo} from "react";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import {PanelHeader as Header} from "./CardPanelStyles";
-import {RowBox} from "../CommonStyles";
+//import {RowBox} from "../common/CommonStyles";
 
 export {Panel} from "./CardPanelStyles";
 export {PanelBody} from "./CardPanelStyles";
@@ -23,6 +23,7 @@ export const WindowHeader = memo(({children, title, onCancel, text, background})
 ));
 WindowHeader.displayName = "WindowHeader";
 
+/*
 
 export const PanelRow = (props) => {
     const inline = props.inline || props.inline === "true";
@@ -39,3 +40,4 @@ export const PanelRow = (props) => {
     );
 };
 
+*/

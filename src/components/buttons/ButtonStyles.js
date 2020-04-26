@@ -1,6 +1,6 @@
 import { memo } from "react";
 import styled from "styled-components";
-import {mainColor, boxShadow, boxShadowHilite} from "../CommonStyles";
+import {mainColor, boxShadow, boxShadowHilite} from "../common/CommonStyles";
 
 
 // eslint-disable-next-line import/prefer-default-export
