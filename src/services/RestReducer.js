@@ -133,7 +133,7 @@ const restReducer = (resource, key = "id") => {
                 ],
                 initId,
                 creating: true,
-                completed: true,
+                completed: false,
             };
         case evt.created:
             data.id = data.id || state.initId;
@@ -143,7 +143,7 @@ const restReducer = (resource, key = "id") => {
                 selectedItem: data,
                 error: null,
                 creating: false,
-                completed: false,
+                completed: true,
                 mode: action.type,
             };
         case evt.reading:
